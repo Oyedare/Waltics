@@ -20,7 +20,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
+  // SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { useContent } from "@/lib/content-context";
 

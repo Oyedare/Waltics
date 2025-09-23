@@ -24,6 +24,8 @@ import {
 } from "recharts";
 import { PieChart, Pie, Cell } from "recharts";
 import { downloadElementAsPng } from "@/lib/download";
+// import type { TooltipProps } from "recharts";
+import { Payload } from "recharts/types/component/DefaultTooltipContent";
 
 const OverviewPage = memo(function OverviewPage() {
   const [period, setPeriod] = useState<"24H" | "7D" | "30D">("7D");
@@ -36,7 +38,7 @@ const OverviewPage = memo(function OverviewPage() {
   const { theme } = useTheme();
   const isDark = theme === "dark";
   const strokeColor = isDark ? "#FFFFFF" : "#0A0A0A";
-  const fillColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";
+  // const fillColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.06)";
   const cursorColor = isDark ? "rgba(255,255,255,0.35)" : "rgba(0,0,0,0.35)";
 
   function formatTime(ts?: number) {
@@ -68,7 +70,7 @@ const OverviewPage = memo(function OverviewPage() {
     }
   }
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Payload<number, string>[] }) => {
     if (!active || !payload || !payload.length) return null;
     const val = payload[0]?.value as number;
     const ts = payload[0]?.payload?.timestamp as number | undefined;
@@ -351,7 +353,10 @@ const OverviewPage = memo(function OverviewPage() {
                           const CustomPieTooltip = ({
                             active,
                             payload,
-                          }: any) => {
+                          }: {
+                            active?: boolean;
+                            payload?: Payload<number, string>[];
+                          }) => {
                             if (!active || !payload || !payload.length)
                               return null;
                             const p = payload[0];

@@ -7,7 +7,7 @@ import {
   BlobsDetailPage,
   BlobsAccountPage,
   AccountsPage,
-  NodesPage,
+  // NodesPage,
 } from "./pages";
 import { useContent } from "@/lib/content-context";
 

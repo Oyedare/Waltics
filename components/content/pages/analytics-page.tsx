@@ -8,15 +8,15 @@ import {
   CardContent,
   CardDescription,
 } from "@/components/ui/card";
-import { useTheme } from "next-themes";
+// import { useTheme } from "next-themes";
 import { Download } from "lucide-react";
 
 const AnalyticsPage = memo(function AnalyticsPage() {
   const [period, setPeriod] = useState<"24H" | "7D" | "30D" | "CUSTOM">("7D");
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
-  const { theme } = useTheme();
-  const isDark = theme === "dark";
+  // const { theme } = useTheme();
+  // const isDark = theme === "dark";
 
   function ExportButtons() {
     return (
@@ -45,7 +45,7 @@ const AnalyticsPage = memo(function AnalyticsPage() {
               <span className="text-muted-foreground">Period:</span>
               <select
                 value={period}
-                onChange={(e) => setPeriod(e.target.value as any)}
+                onChange={(e) => setPeriod(e.target.value as "24H" | "7D" | "30D" | "CUSTOM")}
                 className="h-8 rounded-md px-2 border border-border text-foreground bg-background cursor-pointer"
               >
                 <option value="24H">24 Hours</option>

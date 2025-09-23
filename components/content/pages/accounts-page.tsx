@@ -23,6 +23,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { Payload } from "recharts/types/component/DefaultTooltipContent";
 
 const AccountsPage = memo(function AccountsPage() {
   const [period, setPeriod] = useState<"24H" | "7D" | "30D">("7D");
@@ -53,7 +54,7 @@ const AccountsPage = memo(function AccountsPage() {
     }
   }
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Payload<number, string>[] }) => {
     if (!active || !payload || !payload.length) return null;
     const val = payload[0]?.value as number;
     const ts = payload[0]?.payload?.timestamp as number | undefined;

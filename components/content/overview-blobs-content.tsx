@@ -1,15 +1,7 @@
 "use client";
 
 import React, { memo } from "react";
-import {
-  Database,
-  TrendingUp,
-  Calendar,
-  Users,
-  HardDrive,
-  Shield,
-  Activity,
-} from "lucide-react";
+import { Database, HardDrive, Shield, Activity } from "lucide-react";
 import { useBlobsPaginated } from "@/hooks/use-blobs";
 import {
   Card,
@@ -36,8 +28,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  BarChart,
-  Bar,
 } from "recharts";
 
 const OverviewBlobsContent = memo(function OverviewBlobsContent() {

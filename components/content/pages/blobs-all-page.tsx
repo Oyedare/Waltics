@@ -151,7 +151,7 @@ const BlobsAllPage = memo(function BlobsAllPage() {
               <div className="flex items-center gap-2 text-sm text-muted-foreground overflow-visible">
                 <span>Rows per page</span>
                 {(() => {
-                  const [open, setOpen] = [
+                  const [] = [
                     undefined as unknown as boolean,
                     undefined as unknown as React.Dispatch<
                       React.SetStateAction<boolean>
