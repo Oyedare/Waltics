@@ -7,9 +7,17 @@ export async function downloadElementAsPng(
     watermarkOpacity?: number;
   }
 ) {
+  console.log(`Starting download for: ${filename}`);
+  console.log(
+    `Element dimensions: ${element.getBoundingClientRect().width}x${
+      element.getBoundingClientRect().height
+    }`
+  );
+
   const svgChild = (element.querySelector &&
     element.querySelector("svg")) as SVGSVGElement | null;
   if (svgChild) {
+    console.log("Found SVG child, using SVG export method");
     try {
       await exportSvgElementToPng(
         svgChild,
@@ -19,9 +27,15 @@ export async function downloadElementAsPng(
         options?.watermarkOpacity ?? 0.12
       );
       return;
-    } catch {
+    } catch (error) {
+      console.warn(
+        "SVG export failed, falling back to foreignObject approach:",
+        error
+      );
       // fall back to foreignObject approach
     }
+  } else {
+    console.log("No SVG child found, using foreignObject approach");
   }
 
   const rect = element.getBoundingClientRect();
@@ -30,6 +44,10 @@ export async function downloadElementAsPng(
   const watermarkText = options?.watermarkText ?? "SUIHUB AFRICA";
   const watermarkImageUrl = options?.watermarkImageUrl ?? "/suihub-logo.jpg";
   const watermarkOpacity = options?.watermarkOpacity ?? 0.12;
+
+  console.log(
+    `Using foreignObject approach with dimensions: ${width}x${height}`
+  );
 
   // Clone the node to avoid layout shifts
   const clone = element.cloneNode(true) as HTMLElement;
@@ -162,10 +180,12 @@ export async function downloadElementAsPng(
     a.href = canvas.toDataURL("image/png");
     a.click();
   } catch (e) {
+    console.warn("Canvas tainted, attempting fallback method:", e);
     // If the canvas is tainted (foreignObject + external resources), try exporting any nested SVG directly
     const fallbackSvg = (element.querySelector &&
       element.querySelector("svg")) as SVGSVGElement | null;
     if (fallbackSvg) {
+      console.log("Using SVG fallback for:", filename);
       await exportSvgElementToPng(
         fallbackSvg,
         filename,
@@ -175,6 +195,7 @@ export async function downloadElementAsPng(
       );
       return;
     }
+    console.error("Download failed, no fallback available:", e);
     throw e;
   }
 }

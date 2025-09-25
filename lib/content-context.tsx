@@ -17,6 +17,10 @@ type ContentType =
   | "accounts"
   | "nodes"
   | "analytics"
+  | "storage-providers"
+  | "chatbot"
+  | "network-map"
+  | "storage-calculator"
   | null;
 
 interface ContentContextType {

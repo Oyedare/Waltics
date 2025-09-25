@@ -70,7 +70,13 @@ const OverviewPage = memo(function OverviewPage() {
     }
   }
 
-  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Payload<number, string>[] }) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean;
+    payload?: Payload<number, string>[];
+  }) => {
     if (!active || !payload || !payload.length) return null;
     const val = payload[0]?.value as number;
     const ts = payload[0]?.payload?.timestamp as number | undefined;
@@ -89,8 +95,8 @@ const OverviewPage = memo(function OverviewPage() {
     );
   };
   return (
-    <div className="p-6 h-full space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="p-3 sm:p-4 lg:p-6 h-full space-y-4 sm:space-y-6 overflow-y-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -138,12 +144,14 @@ const OverviewPage = memo(function OverviewPage() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
-              <CardTitle>Blob Growth Over Time</CardTitle>
-              <CardDescription>
+              <CardTitle className="text-base sm:text-lg">
+                Blob Growth Over Time
+              </CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
                 Time-series from getBlobsCountChart
               </CardDescription>
             </div>

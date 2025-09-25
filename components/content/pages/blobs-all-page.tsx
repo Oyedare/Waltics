@@ -36,15 +36,15 @@ const BlobsAllPage = memo(function BlobsAllPage() {
   const rows = useMemo(() => data?.content ?? [], [data]);
 
   return (
-    <div className="p-6 h-full space-y-6">
+    <div className="p-3 sm:p-4 lg:p-6 h-full space-y-4 sm:space-y-6 overflow-y-auto">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>All Blobs</CardTitle>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+        <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <CardTitle className="text-base sm:text-lg">All Blobs</CardTitle>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
             <span>
               Page {page + 1} of {Math.max(1, totalPages)}
             </span>
-            <span>•</span>
+            <span className="hidden sm:inline">•</span>
             <span>{totalElements.toLocaleString()} total</span>
           </div>
         </CardHeader>
@@ -53,18 +53,29 @@ const BlobsAllPage = memo(function BlobsAllPage() {
             id="table-all-blobs"
             className="rounded-md border border-border overflow-hidden"
           >
-            <div className="w-full overflow-x-auto">
+            {/* Desktop Table */}
+            <div className="hidden sm:block w-full overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="bg-muted/50 text-muted-foreground">
                   <tr>
-                    <th className="text-left font-medium px-4 py-2">Blob ID</th>
-                    <th className="text-left font-medium px-4 py-2">Size</th>
-                    <th className="text-left font-medium px-4 py-2">Status</th>
-                    <th className="text-left font-medium px-4 py-2">
+                    <th className="text-left font-medium px-3 sm:px-4 py-2 text-xs sm:text-sm">
+                      Blob ID
+                    </th>
+                    <th className="text-left font-medium px-3 sm:px-4 py-2 text-xs sm:text-sm">
+                      Size
+                    </th>
+                    <th className="text-left font-medium px-3 sm:px-4 py-2 text-xs sm:text-sm">
+                      Status
+                    </th>
+                    <th className="text-left font-medium px-3 sm:px-4 py-2 text-xs sm:text-sm">
                       Timestamp
                     </th>
-                    <th className="text-left font-medium px-4 py-2">Account</th>
-                    <th className="text-left font-medium px-4 py-2">Epochs</th>
+                    <th className="text-left font-medium px-3 sm:px-4 py-2 text-xs sm:text-sm">
+                      Account
+                    </th>
+                    <th className="text-left font-medium px-3 sm:px-4 py-2 text-xs sm:text-sm">
+                      Epochs
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -147,9 +158,93 @@ const BlobsAllPage = memo(function BlobsAllPage() {
                 </tbody>
               </table>
             </div>
-            <div className="flex items-center justify-between gap-4 border-t border-border px-4 py-3">
-              <div className="flex items-center gap-2 text-sm text-muted-foreground overflow-visible">
-                <span>Rows per page</span>
+
+            {/* Mobile Cards */}
+            <div className="sm:hidden">
+              {isLoading ? (
+                <div className="p-4 text-center text-sm text-muted-foreground">
+                  Loading…
+                </div>
+              ) : isError ? (
+                <div className="p-4 text-center text-sm text-muted-foreground">
+                  Failed to load blobs
+                </div>
+              ) : rows.length === 0 ? (
+                <div className="p-4 text-center text-sm text-muted-foreground">
+                  No blobs found
+                </div>
+              ) : (
+                <div className="space-y-3 p-3">
+                  {rows.map((b) => (
+                    <div
+                      key={b.blobId}
+                      className="border rounded-lg p-3 space-y-2"
+                    >
+                      <div className="space-y-1">
+                        <div className="text-xs text-muted-foreground">
+                          Blob ID
+                        </div>
+                        <code className="text-xs bg-muted px-2 py-1 rounded break-all block">
+                          {b.blobId}
+                        </code>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <div className="text-xs text-muted-foreground">
+                            Size
+                          </div>
+                          <div className="text-sm font-medium">
+                            {formatBytes(b.size)}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-xs text-muted-foreground">
+                            Status
+                          </div>
+                          <span
+                            className={
+                              "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium " +
+                              (b.status === "Certified"
+                                ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400"
+                                : "bg-amber-500/15 text-amber-600 dark:text-amber-400")
+                            }
+                          >
+                            {b.status}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-xs text-muted-foreground">
+                          Timestamp
+                        </div>
+                        <div className="text-sm">{formatDate(b.timestamp)}</div>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-xs text-muted-foreground">
+                          Account
+                        </div>
+                        <code className="text-xs bg-muted px-2 py-1 rounded break-all block">
+                          {b.objectId}
+                        </code>
+                      </div>
+                      <div className="space-y-1">
+                        <div className="text-xs text-muted-foreground">
+                          Epochs
+                        </div>
+                        <div className="text-sm">
+                          {b.startEpoch}–{b.endEpoch}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-border px-3 sm:px-4 py-3">
+              <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground overflow-visible">
+                <span className="hidden sm:inline">Rows per page</span>
+                <span className="sm:hidden">Rows</span>
                 {(() => {
                   const [] = [
                     undefined as unknown as boolean,

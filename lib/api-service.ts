@@ -178,11 +178,15 @@ export const walrusApi = {
   },
   async getValidators(
     page: number = 0,
-    size: number = 20
+    size: number = 20,
+    orderBy: "ASC" | "DESC" = "DESC",
+    sortBy: "VALIDATOR_NAME" | "COMMISSION_RATE" | "STATUS" | "STAKE" = "STAKE"
   ): Promise<ValidatorsResponse> {
     const searchParams = new URLSearchParams({
       page: page.toString(),
       size: size.toString(),
+      orderBy,
+      sortBy,
     });
     const response = await fetch(`${API_BASE_URL}/validators?${searchParams}`, {
       method: "GET",

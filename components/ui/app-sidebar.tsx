@@ -8,6 +8,10 @@ import {
   BarChart3,
   FileText,
   Search,
+  Layers,
+  MessageSquare,
+  Map,
+  Calculator,
 } from "lucide-react";
 
 import {
@@ -59,77 +63,45 @@ const accountsItems = [
   },
 ];
 
-const nodesItems = [
+// const nodesItems = [
+//   {
+//     title: "Nodes",
+//     url: "#nodes",
+//     icon: Server,
+//   },
+// ];
+
+const providersItems = [
   {
-    title: "Nodes",
-    url: "#nodes",
-    icon: Server,
+    title: "Storage Providers",
+    url: "#storage-providers",
+    icon: Layers,
   },
 ];
 
-// Analytics section removed per product decision
+const chatbotItems = [
+  {
+    title: "AI Assistant",
+    url: "#chatbot",
+    icon: MessageSquare,
+  },
+];
 
-// Tokenomics section items
-// const tokenomicsItems = [
-//   {
-//     title: "WAL Supply Chart",
-//     url: "#tokenomics-supply",
-//     icon: Coins,
-//   },
-//   {
-//     title: "WAL Price Trend",
-//     url: "#tokenomics-price",
-//     icon: TrendingUp,
-//   },
-//   {
-//     title: "Subsidy Pool Balance",
-//     url: "#tokenomics-subsidy",
-//     icon: Target,
-//   },
-//   {
-//     title: "WAL Paid Per Epoch",
-//     url: "#tokenomics-payout",
-//     icon: BarChart,
-//   },
-// ];
+const networkItems = [
+  {
+    title: "Network Map",
+    url: "#network-map",
+    icon: Map,
+  },
+];
 
-// Usage Insights section items
-// const usageItems = [
-//   {
-//     title: "Top dApps",
-//     url: "#usage-dapps",
-//     icon: Users,
-//   },
-//   {
-//     title: "Category Breakdown",
-//     url: "#usage-categories",
-//     icon: PieChart,
-//   },
-//   {
-//     title: "Storage Growth Trend",
-//     url: "#usage-growth",
-//     icon: TrendingUp,
-//   },
-// ];
-
-// Health & Forecasting section items
-// const healthItems = [
-//   {
-//     title: "Redundancy Health",
-//     url: "#health-redundancy",
-//     icon: Gauge,
-//   },
-//   {
-//     title: "Expiry Forecast",
-//     url: "#health-expiry",
-//     icon: Clock,
-//   },
-//   {
-//     title: "Subsidy Sustainability",
-//     url: "#health-sustainability",
-//     icon: Shield,
-//   },
-// ];
+const calculatorItems = [
+  {
+    title: "Storage Calculator",
+    url: "#storage-calculator",
+    icon: Calculator,
+  },
+];
 
 const AppSidebar = memo(function AppSidebar() {
   const { activeContent } = useContent();
@@ -218,8 +190,82 @@ const AppSidebar = memo(function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Section - Nodes (if available) */}
+        {/* Section - Providers */}
         <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
+            Providers
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {providersItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={activeContent === item.url.replace("#", "")}
+                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
+                  >
+                    <Link href={`/${item.url.replace("#", "")}`}>
+                      <item.icon className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-foreground/90">{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Section - Calculator */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
+            Tools
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {calculatorItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={activeContent === item.url.replace("#", "")}
+                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
+                  >
+                    <Link href={`/${item.url.replace("#", "")}`}>
+                      <item.icon className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-foreground/90">{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* Section - Network */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
+            Network
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {networkItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={activeContent === item.url.replace("#", "")}
+                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
+                  >
+                    <Link href={`/${item.url.replace("#", "")}`}>
+                      <item.icon className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-foreground/90">{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
             Nodes
           </SidebarGroupLabel>
@@ -241,84 +287,32 @@ const AppSidebar = memo(function AppSidebar() {
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
+        </SidebarGroup> */}
+
+        {/* Section - AI Assistant */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
+            AI
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {chatbotItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={activeContent === item.url.replace("#", "")}
+                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
+                  >
+                    <Link href={`/${item.url.replace("#", "")}`}>
+                      <item.icon className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-foreground/90">{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarGroup>
-
-        {/* Analytics section removed */}
-
-        {/* Section 5 - Tokenomics */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Tokenomics
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {tokenomicsItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={activeContent === item.url.replace("#", "")}
-                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
-                  >
-                    <Link href={`/${item.url.replace("#", "")}`}>
-                      <item.icon className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground/90">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
-
-        {/* Section 6 - Usage Insights */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Usage Insights
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {usageItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={activeContent === item.url.replace("#", "")}
-                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
-                  >
-                    <Link href={`/${item.url.replace("#", "")}`}>
-                      <item.icon className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground/90">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
-
-        {/* Section 7 - Health & Forecasting */}
-        {/* <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Health & Forecasting
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {healthItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={activeContent === item.url.replace("#", "")}
-                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
-                  >
-                    <Link href={`/${item.url.replace("#", "")}`}>
-                      <item.icon className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground/90">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
       </SidebarContent>
     </Sidebar>
   );
