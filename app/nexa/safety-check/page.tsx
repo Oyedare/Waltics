@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import Image from "next/image";
 
 type SafetyResponse = {
   coinDev?: string;
@@ -95,7 +96,7 @@ function formatCompact(v?: number) {
   }).format(v);
 }
 
-export default function NexaSafetyCheckPage() {
+function SafetyCheckContent() {
   const searchParams = useSearchParams();
   const [coinType, setCoinType] = useState("");
   const [submitted, setSubmitted] = useState("");
@@ -167,7 +168,6 @@ export default function NexaSafetyCheckPage() {
             <Card id="safety-check-result-card">
               <CardHeader className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-3">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   {data.coinMetadata?.iconUrl ? (
                     <img
                       src={data.coinMetadata.iconUrl}
@@ -297,5 +297,13 @@ export default function NexaSafetyCheckPage() {
         ) : null}
       </div>
     </div>
+  );
+}
+
+export default function NexaSafetyCheckPage() {
+  return (
+    <Suspense fallback={<div className="p-8">Loading…</div>}>
+      <SafetyCheckContent />
+    </Suspense>
   );
 }

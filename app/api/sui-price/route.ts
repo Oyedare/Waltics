@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 type PriceAndMarketCap = {
     marketCap: number;
@@ -6,7 +6,7 @@ type PriceAndMarketCap = {
     supply: number;
 };
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
         const apiKey = process.env.INSIDEX_API_KEY;
         

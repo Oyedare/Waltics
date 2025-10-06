@@ -25,7 +25,7 @@ async function resolveIp(address: string): Promise<string | null> {
   try {
     const res = await dns.lookup(hostname);
     return res.address;
-  } catch (err: any) {
+  } catch {
     // Logging removed
     return null;
   }
@@ -47,7 +47,7 @@ async function getGeoData(ip: string): Promise<IPInfoData> {
       hostname: data.hostname,
       org: data.org,
     };
-  } catch (err: any) {
+  } catch {
     // Logging removed
     return {};
   }

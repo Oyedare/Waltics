@@ -4,7 +4,7 @@ const BASE_URL = "https://spot.api.sui-prod.bluefin.io/external-api/insidex";
 
 export async function GET(
   _: NextRequest,
-  ctx: { params: { coinType?: string } }
+  ctx: { params: Promise<{ coinType: string }> }
 ) {
   try {
     const apiKey = process.env.NEXT_PUBLIC_NEXA_API_KEY;
@@ -15,7 +15,7 @@ export async function GET(
       );
     }
 
-    const coinType = ctx.params?.coinType;
+    const { coinType } = await ctx.params;
     if (!coinType) {
       return NextResponse.json({ error: "Missing coinType" }, { status: 400 });
     }

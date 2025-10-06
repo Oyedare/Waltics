@@ -1,8 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download } from "lucide-react";
-import { downloadElementAsPng } from "@/lib/download";
 import { DownloadButton } from "@/components/ui/download-button";
 import {
   fetchSuiStats,
@@ -83,7 +81,7 @@ function PriceChart({ data }: { data: OHLCData[] }) {
   if (data.length === 0) return null;
 
   const chartData = {
-    labels: data.map((d, i) => {
+    labels: data.map((d) => {
       const date = new Date(parseInt(d._id) * 1000);
       const now = new Date();
       const diffMinutes = Math.floor(

@@ -11,7 +11,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import {
   ChevronUp,
@@ -22,6 +21,7 @@ import {
 } from "lucide-react";
 import { StatCard } from "@/components/stat-card";
 import { downloadElementAsPng } from "@/lib/download";
+import Image from "next/image";
 
 type ValidatorData = {
   name: string;
@@ -361,7 +361,7 @@ export default function ValidatorsPage() {
                         {validator.imageUrl &&
                         validator.imageUrl.trim() !== "" &&
                         !imageErrors.has(validator.name) ? (
-                          <img
+                          <Image
                             src={validator.imageUrl}
                             alt={validator.name}
                             className="w-10 h-10 rounded-full object-cover"
@@ -542,7 +542,7 @@ export default function ValidatorsPage() {
                               {validator.imageUrl &&
                               validator.imageUrl.trim() !== "" &&
                               !imageErrors.has(validator.name) ? (
-                                <img
+                                <Image
                                   src={validator.imageUrl}
                                   alt={validator.name}
                                   className="w-8 h-8 rounded-full object-cover"

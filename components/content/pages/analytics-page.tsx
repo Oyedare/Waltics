@@ -8,29 +8,13 @@ import {
   CardContent,
   CardDescription,
 } from "@/components/ui/card";
-// import { useTheme } from "next-themes";
-import { Download } from "lucide-react";
 import { DownloadButton } from "@/components/ui/download-button";
 
 const AnalyticsPage = memo(function AnalyticsPage() {
   const [period, setPeriod] = useState<"24H" | "7D" | "30D" | "CUSTOM">("7D");
   const [from, setFrom] = useState<string>("");
   const [to, setTo] = useState<string>("");
-  // const { theme } = useTheme();
-  // const isDark = theme === "dark";
-
-  function ExportButtons() {
-    return (
-      <div className="flex items-center gap-2">
-        <button className="h-8 px-3 rounded-md border border-border text-sm cursor-pointer inline-flex items-center gap-1">
-          <Download className="h-4 w-4" /> CSV
-        </button>
-        <button className="h-8 px-3 rounded-md border border-border text-sm cursor-pointer inline-flex items-center gap-1">
-          <Download className="h-4 w-4" /> JSON
-        </button>
-      </div>
-    );
-  }
+ 
 
   return (
     <div className="p-6 h-full space-y-6">

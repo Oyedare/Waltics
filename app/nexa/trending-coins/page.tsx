@@ -1,6 +1,5 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,7 +12,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { useTrendingCoins, TrendingCoin } from "@/hooks/use-trending-coins";
+import { useTrendingCoins } from "@/hooks/use-trending-coins";
 import { DownloadButton } from "@/components/ui/download-button";
 
 function formatCompact(num: number | undefined | null): string {
@@ -146,6 +145,7 @@ export default function NexaTrendingCoinsPage() {
                   <div className="flex items-center space-x-2">
                     {(coin.coinMetadata.iconUrl ||
                       coin.coinMetadata.icon_url) && (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={
                           coin.coinMetadata.iconUrl ||

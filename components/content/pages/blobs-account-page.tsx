@@ -4,8 +4,6 @@ import React, { memo, useMemo, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useAccountBlobsPaginated } from "@/hooks/use-account-blobs";
 import { formatBytes } from "@/lib/blob-utils";
-import { Download } from "lucide-react";
-import { downloadElementAsPng } from "@/lib/download";
 import { DownloadButton } from "@/components/ui/download-button";
 
 function formatDate(ts: number): string {

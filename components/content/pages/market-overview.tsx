@@ -1,6 +1,5 @@
 "use client";
-import { Download } from "lucide-react";
-import { downloadElementAsPng } from "@/lib/download";
+
 import { DownloadButton } from "@/components/ui/download-button";
 
 export default function MarketOverviewPage() {

@@ -1,11 +1,10 @@
 "use client";
 
 import React, { memo } from "react";
-import { Search, Sun, Moon } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useContent } from "@/lib/content-context";
 import { usePathname } from "next/navigation";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 

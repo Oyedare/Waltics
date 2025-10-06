@@ -35,6 +35,7 @@ export default function SuiNetworkMapPage() {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<any>(null);
   const tileLayerRef = useRef<any>(null);
+  const leafletRef = useRef<any>(null);
   const [validators, setValidators] = useState<ValidatorData[]>([]);
   const [loading, setLoading] = useState(true);
   const [mapLoaded, setMapLoaded] = useState(false);
@@ -64,6 +65,7 @@ export default function SuiNetworkMapPage() {
 
       try {
         const L = (await import("leaflet")).default;
+        leafletRef.current = L;
 
         // Initialize map
         const map = L.map(mapRef.current, {
@@ -103,10 +105,9 @@ export default function SuiNetworkMapPage() {
         // Add validator markers
         validators.forEach((validator) => {
           if (validator.location.lat !== 0 && validator.location.lng !== 0) {
-            const marker = L.marker(
-              [validator.location.lat, validator.location.lng],
-              { icon: customIcon }
-            )
+            L.marker([validator.location.lat, validator.location.lng], {
+              icon: customIcon,
+            })
               .addTo(map)
               .bindPopup(
                 `
@@ -170,7 +171,8 @@ export default function SuiNetworkMapPage() {
     if (!mapInstanceRef.current || !tileLayerRef.current) return;
 
     const updateMapTheme = () => {
-      const L = require("leaflet");
+      const L = leafletRef.current;
+      if (!L) return;
       const isDark = document.documentElement.classList.contains("dark");
       const tileUrl = isDark
         ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
@@ -293,16 +295,16 @@ export default function SuiNetworkMapPage() {
     return continentMap[countryCode] || "Unknown";
   };
 
-  const getContinentStats = () => {
-    const continentCounts = validators.reduce((acc, validator) => {
-      const country = validator.location.country || "Unknown";
-      const continent = getCountryToContinent(country);
-      acc[continent] = (acc[continent] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+  // const getContinentStats = () => {
+  //   const continentCounts = validators.reduce((acc, validator) => {
+  //     const country = validator.location.country || "Unknown";
+  //     const continent = getCountryToContinent(country);
+  //     acc[continent] = (acc[continent] || 0) + 1;
+  //     return acc;
+  //   }, {} as Record<string, number>);
 
-    return Object.entries(continentCounts).sort(([, a], [, b]) => b - a);
-  };
+  //   return Object.entries(continentCounts).sort(([, a], [, b]) => b - a);
+  // };
 
   const getNetworkStats = () => {
     const totalValidators = validators.length;
@@ -328,7 +330,6 @@ export default function SuiNetworkMapPage() {
 
   const countryData = getCountryStats();
   const cityData = getCityStats();
-  const continentData = getContinentStats();
   const networkStats = getNetworkStats();
 
   if (loading) {

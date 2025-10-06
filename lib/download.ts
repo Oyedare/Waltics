@@ -2,12 +2,7 @@ import { toPng } from "html-to-image";
 
 export async function downloadElementAsPng(
   element: HTMLElement,
-  filename: string = "export.png",
-  options?: {
-    watermarkText?: string;
-    watermarkImageUrl?: string;
-    watermarkOpacity?: number;
-  }
+  filename: string = "export.png"
 ) {
   console.log(`Starting download for: ${filename}`);
 

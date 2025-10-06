@@ -9,7 +9,7 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { useTheme } from "next-themes";
-import { Download, BarChart3, Database, Shield, Activity } from "lucide-react";
+import { BarChart3, Database, Shield, Activity } from "lucide-react";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -24,7 +24,6 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import { downloadElementAsPng } from "@/lib/download";
 import { DownloadButton } from "@/components/ui/download-button";
 
 function generateTimeSeries(days: number) {

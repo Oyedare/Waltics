@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 const BASE_URL = "https://spot.api.sui-prod.bluefin.io/external-api/insidex";
 

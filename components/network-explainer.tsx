@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface NetworkExplainerProps {
   title: string;
   description: string;
@@ -19,7 +21,7 @@ export function NetworkExplainer({
     <div className={`p-4 sm:p-6 border rounded-lg h-full ${className}`}>
       <div className="flex items-center gap-3 mb-3 sm:mb-4">
         {logoUrl && (
-          <img
+          <Image
             src={logoUrl}
             alt={`${title} logo`}
             className="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex-shrink-0"

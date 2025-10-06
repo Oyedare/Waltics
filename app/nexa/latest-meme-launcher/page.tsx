@@ -1,6 +1,4 @@
 "use client";
-
-import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -15,7 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   useLatestMemeLauncherCoins,
-  LatestMemeLauncherCoin,
 } from "@/hooks/use-latest-meme-launcher-coins";
 import { DownloadButton } from "@/components/ui/download-button";
 
