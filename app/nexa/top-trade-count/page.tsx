@@ -1,10 +1,26 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DownloadButton } from "@/components/ui/download-button";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 
 type Row = {
   _id?: string;
@@ -67,26 +83,50 @@ export default function NexaTopTradeCountPage() {
           <h1 className="text-3xl font-bold text-foreground">
             Top Trade Count
           </h1>
-          <Badge variant="secondary">Nexa</Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">Nexa</Badge>
+            <DownloadButton
+              elementId="top-trade-count-table"
+              filename="top-trade-count-table.png"
+              size="sm"
+            />
+          </div>
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i}>
-                <CardHeader className="flex-row items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-md" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-4 w-2/3" />
-                    <Skeleton className="h-3 w-1/3" />
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Skeleton className="h-3 w-full" />
-                  <Skeleton className="h-8 w-full" />
-                </CardContent>
-              </Card>
-            ))}
+          <div id="top-trade-count-table">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Coin</TableHead>
+                  <TableHead>Trades</TableHead>
+                  <TableHead>Volume</TableHead>
+                  <TableHead>Volume USD</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <Skeleton className="h-4 w-64" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-24" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-8 w-24" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         ) : isError ? (
           <Card className="border-destructive/40">
@@ -101,52 +141,68 @@ export default function NexaTopTradeCountPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {rows.map((r, idx) => (
-              <Card
-                key={`${r._id || r.coin}-${idx}`}
-                id={`trade-count-card-${idx}`}
-                className="hover:shadow-md transition-shadow"
-              >
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <CardTitle className="truncate">
-                    {formatCoinTypeShort(r.coin)}
-                  </CardTitle>
-                  <DownloadButton
-                    elementId={`trade-count-card-${idx}`}
-                    filename={`trade-count-${formatCoinTypeShort(
-                      r.coin
-                    ).replace(/[^a-zA-Z0-9]/g, "-")}.png`}
-                    size="sm"
-                    showText={false}
-                  />
-                </CardHeader>
-                <CardContent className="space-y-3 text-sm">
-                  <div className="grid grid-cols-3 gap-3">
-                    <div className="rounded-md border p-2 text-center">
-                      <div className="text-xs text-muted-foreground">
-                        Trades
-                      </div>
-                      <div className="font-semibold">{r.tradeCount ?? "-"}</div>
-                    </div>
-                    <div className="rounded-md border p-2 text-center">
-                      <div className="text-xs text-muted-foreground">
-                        Volume
-                      </div>
-                      <div className="font-semibold">{r.volume ?? "-"}</div>
-                    </div>
-                    <div className="rounded-md border p-2 text-center">
-                      <div className="text-xs text-muted-foreground">
-                        Volume USD
-                      </div>
-                      <div className="font-semibold">
-                        {formatUsd(r.volumeUsd)}
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div id="top-trade-count-table">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Coin</TableHead>
+                  <TableHead>Trades</TableHead>
+                  <TableHead>Volume</TableHead>
+                  <TableHead>Volume USD</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((r, idx) => (
+                  <TableRow
+                    key={`${r._id || r.coin}-${idx}`}
+                    id={`trade-count-row-${idx}`}
+                  >
+                    <TableCell>
+                      <span className="truncate" title={r.coin}>
+                        {formatCoinTypeShort(r.coin)}
+                      </span>
+                    </TableCell>
+                    <TableCell className="font-medium">
+                      {r.tradeCount ?? "-"}
+                    </TableCell>
+                    <TableCell>{r.volume ?? "-"}</TableCell>
+                    <TableCell>{formatUsd(r.volumeUsd)}</TableCell>
+                    <TableCell>
+                      <Sheet>
+                        <SheetTrigger asChild>
+                          <Button size="sm" variant="secondary">
+                            Safety Check
+                          </Button>
+                        </SheetTrigger>
+                        <SheetContent>
+                          <SheetHeader>
+                            <SheetTitle>Safety Check</SheetTitle>
+                          </SheetHeader>
+                          <div className="p-4 text-sm">
+                            <p className="mb-2 text-muted-foreground break-all">
+                              {r.coin}
+                            </p>
+                            <p className="mb-4">
+                              Use the form on the Safety Check page for a full
+                              report.
+                            </p>
+                            <a
+                              className="underline text-primary"
+                              href={`/nexa/safety-check?coinType=${encodeURIComponent(
+                                r.coin || ""
+                              )}`}
+                            >
+                              Open Safety Check Page →
+                            </a>
+                          </div>
+                        </SheetContent>
+                      </Sheet>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         )}
       </div>

@@ -1,9 +1,16 @@
 "use client";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo } from "react";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 import {
   Sheet,
   SheetContent,
@@ -62,23 +69,66 @@ export default function NexaTrendingCoinsPage() {
         <div className="mx-auto space-y-6">
           <div className="flex items-center justify-between">
             <Skeleton className="h-8 w-64" />
-            <Skeleton className="h-6 w-16" />
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-6 w-16" />
+              <Skeleton className="h-8 w-28" />
+            </div>
           </div>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i}>
-                <CardHeader>
-                  <Skeleton className="h-6 w-32" />
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-full" />
-                    <Skeleton className="h-4 w-3/4" />
-                    <Skeleton className="h-4 w-1/2" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div id="trending-coins-table">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Coin</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>24h Change</TableHead>
+                  <TableHead>Mkt Cap</TableHead>
+                  <TableHead>Volume 24h</TableHead>
+                  <TableHead>Holders</TableHead>
+                  <TableHead>Trades 24h</TableHead>
+                  <TableHead>Coin Type</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-6 w-6 rounded-full" />
+                        <div className="space-y-1">
+                          <Skeleton className="h-4 w-32" />
+                          <Skeleton className="h-3 w-20" />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-40" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-8 w-24" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         </div>
       </div>
@@ -129,109 +179,91 @@ export default function NexaTrendingCoinsPage() {
       <div className="mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-foreground">Trending Coins</h1>
-          <Badge variant="secondary">Nexa</Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">Nexa</Badge>
+            <DownloadButton
+              elementId="trending-coins-table"
+              filename="trending-coins-table.png"
+              size="sm"
+            />
+          </div>
         </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {coins.map((coin) => (
-            <Card
-              key={coin.coinMetadata.coinType}
-              id={`trending-coin-card-${(
-                coin.coinMetadata.symbol || "unknown"
-              ).replace(/[^a-zA-Z0-9]/g, "-")}`}
-              className="hover:shadow-lg transition-shadow"
-            >
-              <CardHeader>
-                <CardTitle className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    {(coin.coinMetadata.iconUrl ||
-                      coin.coinMetadata.icon_url) && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={
-                          coin.coinMetadata.iconUrl ||
-                          coin.coinMetadata.icon_url
-                        }
-                        alt={coin.coinMetadata.name || "Unknown"}
-                        className="w-6 h-6 rounded-full"
-                      />
-                    )}
-                    <span className="text-lg font-semibold">
-                      {coin.coinMetadata.name || "Unknown"}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline">
-                      {coin.coinMetadata.symbol || "N/A"}
-                    </Badge>
-                    <DownloadButton
-                      elementId={`trending-coin-card-${(
-                        coin.coinMetadata.symbol || "unknown"
-                      ).replace(/[^a-zA-Z0-9]/g, "-")}`}
-                      filename={`trending-coin-${(
-                        coin.coinMetadata.symbol || "unknown"
-                      ).replace(/[^a-zA-Z0-9]/g, "-")}.png`}
-                      size="sm"
-                      showText={false}
-                    />
-                  </div>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">Price</span>
-                    <span className="font-mono">{formatUSD(coin.price)}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">
-                      24h Change
-                    </span>
+        <div id="trending-coins-table">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Coin</TableHead>
+                <TableHead>Price</TableHead>
+                <TableHead>24h Change</TableHead>
+                <TableHead>Mkt Cap</TableHead>
+                <TableHead>Volume 24h</TableHead>
+                <TableHead>Holders</TableHead>
+                <TableHead>Trades 24h</TableHead>
+                <TableHead>Coin Type</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {coins.map((coin) => (
+                <TableRow key={coin.coinMetadata.coinType}>
+                  <TableCell>
+                    <div className="flex items-center gap-3 min-w-0">
+                      {coin.coinMetadata.iconUrl ||
+                      coin.coinMetadata.icon_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={
+                            coin.coinMetadata.iconUrl ||
+                            coin.coinMetadata.icon_url
+                          }
+                          alt={coin.coinMetadata.name || "Unknown"}
+                          className="w-6 h-6 rounded-full"
+                        />
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-accent" />
+                      )}
+                      <div className="min-w-0">
+                        <div className="font-medium truncate">
+                          {coin.coinMetadata.name || "Unknown"}
+                        </div>
+                        <div className="text-xs text-muted-foreground truncate">
+                          {coin.coinMetadata.symbol || "N/A"}
+                        </div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-medium">
+                    {formatUSD(coin.price)}
+                  </TableCell>
+                  <TableCell>
                     <span
-                      className={`font-mono ${
+                      className={
                         (coin.percentagePriceChange1d ?? 0) >= 0
                           ? "text-green-600 dark:text-green-400"
                           : "text-red-600 dark:text-red-400"
-                      }`}
+                      }
                     >
                       {formatPercentage(coin.percentagePriceChange1d)}
                     </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">
-                      Market Cap
+                  </TableCell>
+                  <TableCell>{formatMarketCapShort(coin.marketCap)}</TableCell>
+                  <TableCell>
+                    {formatMarketCapShort(coin.coin1dTradeVolumeUsd)}
+                  </TableCell>
+                  <TableCell>{formatCompact(coin.holdersCount)}</TableCell>
+                  <TableCell>{formatCompact(coin.coin1dTradeCount)}</TableCell>
+                  <TableCell>
+                    <span
+                      className="text-xs text-muted-foreground truncate"
+                      title={coin.coinMetadata.coinType || undefined}
+                    >
+                      {formatCoinTypeShort(coin.coinMetadata.coinType)}
                     </span>
-                    <span className="font-mono">
-                      {formatMarketCapShort(coin.marketCap)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">
-                      Volume 24h
-                    </span>
-                    <span className="font-mono">
-                      {formatMarketCapShort(coin.coin1dTradeVolumeUsd)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">
-                      Holders
-                    </span>
-                    <span className="font-mono">
-                      {formatCompact(coin.holdersCount)}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">
-                      Trades 24h
-                    </span>
-                    <span className="font-mono">
-                      {formatCompact(coin.coin1dTradeCount)}
-                    </span>
-                  </div>
-                  <div className="pt-2">
+                  </TableCell>
+                  <TableCell>
                     <Sheet>
                       <SheetTrigger asChild>
-                        <Button variant="outline" className="w-full">
+                        <Button size="sm" variant="secondary">
                           Safety Check
                         </Button>
                       </SheetTrigger>
@@ -266,11 +298,11 @@ export default function NexaTrendingCoinsPage() {
                         </div>
                       </SheetContent>
                     </Sheet>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </div>

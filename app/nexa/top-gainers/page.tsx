@@ -1,10 +1,26 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DownloadButton } from "@/components/ui/download-button";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 
 type TopGainer = {
   coin?: string;
@@ -72,26 +88,60 @@ export default function NexaTopGainersPage() {
       <div className="mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold text-foreground">Top Gainers</h1>
-          <Badge variant="secondary">Nexa</Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">Nexa</Badge>
+            <DownloadButton
+              elementId="top-gainers-table"
+              filename="top-gainers-table.png"
+              size="sm"
+            />
+          </div>
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i}>
-                <CardHeader className="flex-row items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-md" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-4 w-2/3" />
-                    <Skeleton className="h-3 w-1/3" />
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Skeleton className="h-3 w-full" />
-                  <Skeleton className="h-8 w-full" />
-                </CardContent>
-              </Card>
-            ))}
+          <div id="top-gainers-table">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Coin</TableHead>
+                  <TableHead>4h Change</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>4h Ago</TableHead>
+                  <TableHead>Coin Type</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-6 w-6 rounded" />
+                        <div className="space-y-1">
+                          <Skeleton className="h-4 w-32" />
+                          <Skeleton className="h-3 w-20" />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-40" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-8 w-24" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         ) : isError ? (
           <Card className="border-destructive/40">
@@ -106,92 +156,107 @@ export default function NexaTopGainersPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((it, idx) => {
-              const m = it.coinMetadata;
-              const icon = m?.iconUrl;
-              const isUp = (it.priceChange4h ?? 0) >= 0;
-              return (
-                <Card
-                  key={`${m?.id || it.coin}-${idx}`}
-                  id={`top-gainer-card-${(m?.symbol || "unknown").replace(
-                    /[^a-zA-Z0-9]/g,
-                    "-"
-                  )}-${idx}`}
-                  className="hover:shadow-md transition-shadow"
-                >
-                  <CardHeader className="space-y-2">
-                    <div className="flex items-center gap-3">
-                      {icon ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={icon}
-                          alt={m?.symbol || ""}
-                          className="h-10 w-10 rounded-md object-cover"
-                        />
-                      ) : (
-                        <div className="h-10 w-10 rounded-md bg-accent" />
-                      )}
-                      <div className="min-w-0 flex-1">
-                        <CardTitle className="truncate flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-1">
-                            {m?.name}{" "}
-                            <span className="text-muted-foreground">
-                              ({m?.symbol})
-                            </span>
+          <div id="top-gainers-table">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Coin</TableHead>
+                  <TableHead>4h Change</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>4h Ago</TableHead>
+                  <TableHead>Coin Type</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {items.map((it, idx) => {
+                  const m = it.coinMetadata;
+                  const icon = m?.iconUrl;
+                  const isUp = (it.priceChange4h ?? 0) >= 0;
+                  return (
+                    <TableRow
+                      key={`${m?.id || it.coin}-${idx}`}
+                      id={`top-gainer-row-${idx}`}
+                    >
+                      <TableCell>
+                        <div className="flex items-center gap-3 min-w-0">
+                          {icon ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={icon}
+                              alt={m?.symbol || ""}
+                              className="h-6 w-6 rounded object-cover"
+                            />
+                          ) : (
+                            <div className="h-6 w-6 rounded bg-accent" />
+                          )}
+                          <div className="min-w-0">
+                            <div className="font-medium truncate">
+                              {m?.name}{" "}
+                              <span className="text-muted-foreground">
+                                ({m?.symbol})
+                              </span>
+                            </div>
                           </div>
-                          <DownloadButton
-                            elementId={`top-gainer-card-${(
-                              m?.symbol || "unknown"
-                            ).replace(/[^a-zA-Z0-9]/g, "-")}-${idx}`}
-                            filename={`top-gainer-${(
-                              m?.symbol || "unknown"
-                            ).replace(/[^a-zA-Z0-9]/g, "-")}.png`}
-                            size="sm"
-                            showText={false}
-                          />
-                        </CardTitle>
-                        <div className="text-xs text-muted-foreground truncate">
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <span
+                          className={`font-semibold ${
+                            isUp
+                              ? "text-emerald-600 dark:text-emerald-400"
+                              : "text-rose-600 dark:text-rose-400"
+                          }`}
+                        >
+                          {formatPercent(it.priceChange4h)}
+                        </span>
+                      </TableCell>
+                      <TableCell>{it.price ?? "-"}</TableCell>
+                      <TableCell>{it.price4hAgo ?? "-"}</TableCell>
+                      <TableCell>
+                        <span
+                          className="text-xs text-muted-foreground truncate"
+                          title={m?.coinType ?? it.coin}
+                        >
                           {formatCoinTypeShort(m?.coinType ?? it.coin)}
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="rounded-md border p-2 text-center">
-                      <div className="text-xs text-muted-foreground">
-                        4h Change
-                      </div>
-                      <div
-                        className={`font-semibold ${
-                          isUp
-                            ? "text-emerald-600 dark:text-emerald-400"
-                            : "text-rose-600 dark:text-rose-400"
-                        }`}
-                      >
-                        {formatPercent(it.priceChange4h)}
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="rounded-md border p-2">
-                        <div className="text-xs text-muted-foreground">
-                          Price
-                        </div>
-                        <div className="font-medium">{it.price ?? "-"}</div>
-                      </div>
-                      <div className="rounded-md border p-2">
-                        <div className="text-xs text-muted-foreground">
-                          4h Ago
-                        </div>
-                        <div className="font-medium">
-                          {it.price4hAgo ?? "-"}
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button size="sm" variant="secondary">
+                              Safety Check
+                            </Button>
+                          </SheetTrigger>
+                          <SheetContent>
+                            <SheetHeader>
+                              <SheetTitle>Safety Check</SheetTitle>
+                            </SheetHeader>
+                            <div className="p-4 text-sm">
+                              <p className="mb-2 text-muted-foreground break-all">
+                                {m?.coinType ?? it.coin}
+                              </p>
+                              <p className="mb-4">
+                                Use the form on the Safety Check page for a full
+                                report.
+                              </p>
+                              <a
+                                className="underline text-primary"
+                                href={`/nexa/safety-check?coinType=${encodeURIComponent(
+                                  m?.coinType ?? it.coin ?? ""
+                                )}`}
+                              >
+                                Open Safety Check Page →
+                              </a>
+                            </div>
+                          </SheetContent>
+                        </Sheet>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </div>
         )}
       </div>

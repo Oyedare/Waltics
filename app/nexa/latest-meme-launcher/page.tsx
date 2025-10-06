@@ -4,6 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMemo } from "react";
 import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
+import {
   Sheet,
   SheetContent,
   SheetHeader,
@@ -11,9 +19,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import {
-  useLatestMemeLauncherCoins,
-} from "@/hooks/use-latest-meme-launcher-coins";
+import { useLatestMemeLauncherCoins } from "@/hooks/use-latest-meme-launcher-coins";
 import { DownloadButton } from "@/components/ui/download-button";
 
 function formatCompactNumber(value?: number) {
@@ -71,31 +77,80 @@ export default function NexaLatestMemeLauncherPage() {
           <h1 className="text-3xl font-bold text-foreground">
             Latest Meme Launcher Coins
           </h1>
-          <Badge variant="secondary">Nexa</Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="secondary">Nexa</Badge>
+            <DownloadButton
+              elementId="latest-meme-launcher-table"
+              filename="latest-meme-launcher-coins-table.png"
+              size="sm"
+            />
+          </div>
         </div>
 
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <Card key={i}>
-                <CardHeader className="flex-row items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-md" />
-                  <div className="flex-1 space-y-2">
-                    <Skeleton className="h-4 w-2/3" />
-                    <Skeleton className="h-3 w-1/3" />
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Skeleton className="h-3 w-full" />
-                  <Skeleton className="h-3 w-2/3" />
-                  <div className="grid grid-cols-3 gap-3">
-                    <Skeleton className="h-8 w-full" />
-                    <Skeleton className="h-8 w-full" />
-                    <Skeleton className="h-8 w-full" />
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div id="latest-meme-launcher-table">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Coin</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Mkt Cap</TableHead>
+                  <TableHead>Holders</TableHead>
+                  <TableHead>Bonding</TableHead>
+                  <TableHead>Virtual SUI</TableHead>
+                  <TableHead>24h Buy Vol</TableHead>
+                  <TableHead>24h Sell Vol</TableHead>
+                  <TableHead>Coin Type</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <TableRow key={i}>
+                    <TableCell>
+                      <div className="flex items-center gap-3">
+                        <Skeleton className="h-6 w-6 rounded" />
+                        <div className="space-y-1">
+                          <Skeleton className="h-4 w-32" />
+                          <Skeleton className="h-3 w-20" />
+                        </div>
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-20" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-24" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-24" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-40" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-6 w-16" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-8 w-24" />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </div>
         ) : isError ? (
           <Card className="border-destructive/40">
@@ -112,170 +167,137 @@ export default function NexaLatestMemeLauncherPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {coins.map((c) => {
-              const icon = c.iconUrl || c.icon_url;
-              return (
-                <Card
-                  key={c._id || c.id}
-                  id={`meme-launcher-card-${c._id || c.id}`}
-                  className="hover:shadow-md transition-shadow"
-                >
-                  <CardHeader className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        {icon ? (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img
-                            src={icon}
-                            alt={c.symbol}
-                            className="h-10 w-10 rounded-md object-cover"
-                          />
-                        ) : (
-                          <div className="h-10 w-10 rounded-md bg-accent" />
-                        )}
-                        <div className="min-w-0">
-                          <CardTitle className="truncate">
-                            {c.name}{" "}
-                            <span className="text-muted-foreground">
-                              ({c.symbol})
-                            </span>
-                          </CardTitle>
-                          <div className="text-xs text-muted-foreground truncate">
-                            {c.platform ?? ""}
+          <div id="latest-meme-launcher-table">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Coin</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Mkt Cap</TableHead>
+                  <TableHead>Holders</TableHead>
+                  <TableHead>Bonding</TableHead>
+                  <TableHead>Virtual SUI</TableHead>
+                  <TableHead>24h Buy Vol</TableHead>
+                  <TableHead>24h Sell Vol</TableHead>
+                  <TableHead>Coin Type</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {coins.map((c) => {
+                  const icon = c.iconUrl || c.icon_url;
+                  return (
+                    <TableRow
+                      key={c._id || c.id}
+                      id={`meme-launcher-row-${c._id || c.id}`}
+                    >
+                      <TableCell>
+                        <div className="flex items-center gap-3 min-w-0">
+                          {icon ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={icon}
+                              alt={c.symbol}
+                              className="h-6 w-6 rounded object-cover"
+                            />
+                          ) : (
+                            <div className="h-6 w-6 rounded bg-accent" />
+                          )}
+                          <div className="min-w-0">
+                            <div className="font-medium truncate">
+                              {c.name}{" "}
+                              <span className="text-muted-foreground">
+                                ({c.symbol})
+                              </span>
+                            </div>
+                            <div className="text-xs text-muted-foreground truncate">
+                              {c.platform ?? ""}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <DownloadButton
-                        elementId={`meme-launcher-card-${c._id || c.id}`}
-                        filename={`meme-launcher-${(
-                          c.symbol || "unknown"
-                        ).replace(/[^a-zA-Z0-9]/g, "-")}.png`}
-                        size="sm"
-                        showText={false}
-                      />
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {c.description ? (
-                      <p className="text-sm text-muted-foreground line-clamp-2">
-                        {c.description}
-                      </p>
-                    ) : null}
-
-                    <div className="grid grid-cols-3 gap-3 text-sm">
-                      <div className="rounded-md border p-2 text-center">
-                        <div className="text-xs text-muted-foreground">
-                          Price
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {formatUsd(c.price)}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {formatMarketCapShort(c.marketCap)}
+                      </TableCell>
+                      <TableCell className="font-medium">
+                        {formatCompactNumber(c.holdersCount)}
+                      </TableCell>
+                      <TableCell>
+                        {formatBondingProgress(c.bondingProgress)}
+                      </TableCell>
+                      <TableCell>{formatCompactNumber(c.virtualSui)}</TableCell>
+                      <TableCell>{formatUsd(c.buyVolume)}</TableCell>
+                      <TableCell>{formatUsd(c.sellVolume)}</TableCell>
+                      <TableCell>
+                        <span
+                          className="text-xs text-muted-foreground truncate"
+                          title={c.coinType}
+                        >
+                          {formatCoinTypeShort(c.coinType)}
+                        </span>
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          {c.isHoneypot ? (
+                            <Badge variant="destructive">Honeypot</Badge>
+                          ) : (
+                            <Badge variant="outline">Tradable</Badge>
+                          )}
+                          {c.isMemeZone && (
+                            <Badge variant="secondary">Meme Zone</Badge>
+                          )}
                         </div>
-                        <div className="font-semibold">
-                          {formatUsd(c.price)}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <Sheet>
+                            <SheetTrigger asChild>
+                              <Button size="sm" variant="secondary">
+                                Safety Check
+                              </Button>
+                            </SheetTrigger>
+                            <SheetContent side="right">
+                              <SheetHeader>
+                                <SheetTitle>Safety Check</SheetTitle>
+                              </SheetHeader>
+                              <div className="p-4 text-sm">
+                                <p className="mb-2 text-muted-foreground break-all">
+                                  {c.coinType}
+                                </p>
+                                <p className="mb-4">
+                                  Use the form on the Safety Check page for a
+                                  full report.
+                                </p>
+                                <a
+                                  className="underline text-primary"
+                                  href={`/nexa/safety-check?coinType=${encodeURIComponent(
+                                    c.coinType || ""
+                                  )}`}
+                                >
+                                  Open Safety Check Page →
+                                </a>
+                              </div>
+                            </SheetContent>
+                          </Sheet>
+                          {/* <DownloadButton
+                            elementId={`meme-launcher-row-${c._id || c.id}`}
+                            filename={`meme-launcher-${(
+                              c.symbol || "unknown"
+                            ).replace(/[^a-zA-Z0-9]/g, "-")}.png`}
+                            size="sm"
+                            showText={false}
+                          /> */}
                         </div>
-                      </div>
-                      <div className="rounded-md border p-2 text-center">
-                        <div className="text-xs text-muted-foreground">
-                          Mkt Cap
-                        </div>
-                        <div className="font-semibold">
-                          {formatMarketCapShort(c.marketCap)}
-                        </div>
-                      </div>
-                      <div className="rounded-md border p-2 text-center">
-                        <div className="text-xs text-muted-foreground">
-                          Holders
-                        </div>
-                        <div className="font-semibold">
-                          {formatCompactNumber(c.holdersCount)}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="rounded-md border p-2">
-                        <div className="text-xs text-muted-foreground">
-                          Bonding Progress
-                        </div>
-                        <div className="font-medium">
-                          {formatBondingProgress(c.bondingProgress)}
-                        </div>
-                      </div>
-                      <div className="rounded-md border p-2">
-                        <div className="text-xs text-muted-foreground">
-                          Virtual SUI
-                        </div>
-                        <div className="font-medium">
-                          {formatCompactNumber(c.virtualSui)}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      <div className="rounded-md border p-2">
-                        <div className="text-xs text-muted-foreground">
-                          24h Buy Vol
-                        </div>
-                        <div className="font-medium">
-                          {formatUsd(c.buyVolume)}
-                        </div>
-                      </div>
-                      <div className="rounded-md border p-2">
-                        <div className="text-xs text-muted-foreground">
-                          24h Sell Vol
-                        </div>
-                        <div className="font-medium">
-                          {formatUsd(c.sellVolume)}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
-                      <span className="truncate" title={c.coinType}>
-                        {formatCoinTypeShort(c.coinType)}
-                      </span>
-                      <div className="flex items-center gap-2">
-                        {c.isHoneypot ? (
-                          <Badge variant="destructive">Honeypot</Badge>
-                        ) : (
-                          <Badge variant="outline">Tradable</Badge>
-                        )}
-                        {c.isMemeZone && (
-                          <Badge variant="secondary">Meme Zone</Badge>
-                        )}
-                        <Sheet>
-                          <SheetTrigger asChild>
-                            <Button size="sm" variant="secondary">
-                              Safety Check
-                            </Button>
-                          </SheetTrigger>
-                          <SheetContent side="right">
-                            <SheetHeader>
-                              <SheetTitle>Safety Check</SheetTitle>
-                            </SheetHeader>
-                            <div className="p-4 text-sm">
-                              <p className="mb-2 text-muted-foreground break-all">
-                                {c.coinType}
-                              </p>
-                              <p className="mb-4">
-                                Use the form on the Safety Check page for a full
-                                report.
-                              </p>
-                              <a
-                                className="underline text-primary"
-                                href={`/nexa/safety-check?coinType=${encodeURIComponent(
-                                  c.coinType || ""
-                                )}`}
-                              >
-                                Open Safety Check Page →
-                              </a>
-                            </div>
-                          </SheetContent>
-                        </Sheet>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </div>
         )}
       </div>
