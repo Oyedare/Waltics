@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 // import { useTheme } from "next-themes";
 import { Download } from "lucide-react";
+import { DownloadButton } from "@/components/ui/download-button";
 
 const AnalyticsPage = memo(function AnalyticsPage() {
   const [period, setPeriod] = useState<"24H" | "7D" | "30D" | "CUSTOM">("7D");
@@ -34,18 +35,26 @@ const AnalyticsPage = memo(function AnalyticsPage() {
   return (
     <div className="p-6 h-full space-y-6">
       {/* Controls */}
-      <Card>
+      <Card id="analytics-controls-card">
         <CardHeader className="flex items-start justify-between gap-4">
           <div>
             <CardTitle>Advanced Analytics</CardTitle>
             <CardDescription>Deep-dive, compare, and export</CardDescription>
           </div>
+          <DownloadButton
+            elementId="analytics-controls-card"
+            filename="analytics-controls.png"
+            size="sm"
+            showText={false}
+          />
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-sm">
               <span className="text-muted-foreground">Period:</span>
               <select
                 value={period}
-                onChange={(e) => setPeriod(e.target.value as "24H" | "7D" | "30D" | "CUSTOM")}
+                onChange={(e) =>
+                  setPeriod(e.target.value as "24H" | "7D" | "30D" | "CUSTOM")
+                }
                 className="h-8 rounded-md px-2 border border-border text-foreground bg-background cursor-pointer"
               >
                 <option value="24H">24 Hours</option>
@@ -82,25 +91,35 @@ const AnalyticsPage = memo(function AnalyticsPage() {
 
       {/* Comparisons */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
+        <Card id="blobs-vs-accounts-chart">
           <CardHeader className="flex items-start justify-between gap-4">
             <div>
               <CardTitle>Blobs vs Accounts</CardTitle>
               <CardDescription>Compare growth trends</CardDescription>
             </div>
-            <ExportButtons />
+            <DownloadButton
+              elementId="blobs-vs-accounts-chart"
+              filename="blobs-vs-accounts.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="h-[320px] rounded-md bg-muted" />
           </CardContent>
         </Card>
-        <Card>
+        <Card id="avg-size-vs-counts-chart">
           <CardHeader className="flex items-start justify-between gap-4">
             <div>
               <CardTitle>Avg Size vs Counts</CardTitle>
               <CardDescription>Correlated time-series</CardDescription>
             </div>
-            <ExportButtons />
+            <DownloadButton
+              elementId="avg-size-vs-counts-chart"
+              filename="avg-size-vs-counts.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="h-[320px] rounded-md bg-muted" />
@@ -110,37 +129,52 @@ const AnalyticsPage = memo(function AnalyticsPage() {
 
       {/* Segmentation */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card>
+        <Card id="size-buckets-chart">
           <CardHeader className="flex items-start justify-between gap-4">
             <div>
               <CardTitle>Size Buckets</CardTitle>
               <CardDescription>Small / M / L distribution</CardDescription>
             </div>
-            <ExportButtons />
+            <DownloadButton
+              elementId="size-buckets-chart"
+              filename="size-buckets.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="h-[240px] rounded-md bg-muted" />
           </CardContent>
         </Card>
-        <Card>
+        <Card id="status-breakdown-chart">
           <CardHeader className="flex items-start justify-between gap-4">
             <div>
               <CardTitle>Status Breakdown</CardTitle>
               <CardDescription>Certified vs Registered</CardDescription>
             </div>
-            <ExportButtons />
+            <DownloadButton
+              elementId="status-breakdown-chart"
+              filename="status-breakdown.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="h-[240px] rounded-md bg-muted" />
           </CardContent>
         </Card>
-        <Card>
+        <Card id="expiry-windows-chart">
           <CardHeader className="flex items-start justify-between gap-4">
             <div>
               <CardTitle>Expiry Windows</CardTitle>
               <CardDescription>Start–End epoch distribution</CardDescription>
             </div>
-            <ExportButtons />
+            <DownloadButton
+              elementId="expiry-windows-chart"
+              filename="expiry-windows.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="h-[240px] rounded-md bg-muted" />
@@ -150,25 +184,35 @@ const AnalyticsPage = memo(function AnalyticsPage() {
 
       {/* Anomalies / Performance */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
+        <Card id="anomalies-chart">
           <CardHeader className="flex items-start justify-between gap-4">
             <div>
               <CardTitle>Anomalies</CardTitle>
               <CardDescription>Spikes, dips, and outliers</CardDescription>
             </div>
-            <ExportButtons />
+            <DownloadButton
+              elementId="anomalies-chart"
+              filename="anomalies.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="h-[280px] rounded-md bg-muted" />
           </CardContent>
         </Card>
-        <Card>
+        <Card id="endpoint-performance-chart">
           <CardHeader className="flex items-start justify-between gap-4">
             <div>
               <CardTitle>Endpoint Performance</CardTitle>
               <CardDescription>Latency & availability trend</CardDescription>
             </div>
-            <ExportButtons />
+            <DownloadButton
+              elementId="endpoint-performance-chart"
+              filename="endpoint-performance.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="h-[280px] rounded-md bg-muted" />

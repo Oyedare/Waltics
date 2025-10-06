@@ -25,6 +25,7 @@ import {
   Cell,
 } from "recharts";
 import { downloadElementAsPng } from "@/lib/download";
+import { DownloadButton } from "@/components/ui/download-button";
 
 function generateTimeSeries(days: number) {
   const now = Date.now();
@@ -202,27 +203,26 @@ const NodesPage = memo(function NodesPage() {
               </button>
             ))}
           </div>
-          <button
-            onClick={() => {
-              const el = document.getElementById("nodes-dashboard");
-              if (el) downloadElementAsPng(el);
-            }}
-            className="inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm hover:bg-muted"
-          >
-            <Download className="h-4 w-4" /> Export
-          </button>
         </div>
       </div>
 
       <div id="nodes-dashboard" className="space-y-6">
         {/* KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card>
+          <Card id="uploads-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Uploads (Publisher)
-              </CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm font-medium">
+                  Uploads (Publisher)
+                </CardTitle>
+                <BarChart3 className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <DownloadButton
+                elementId="uploads-card"
+                filename="uploads-publisher.png"
+                size="sm"
+                showText={false}
+              />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
@@ -234,12 +234,20 @@ const NodesPage = memo(function NodesPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card id="retrievals-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Retrievals (Aggregator)
-              </CardTitle>
-              <Database className="h-4 w-4 text-muted-foreground" />
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm font-medium">
+                  Retrievals (Aggregator)
+                </CardTitle>
+                <Database className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <DownloadButton
+                elementId="retrievals-card"
+                filename="retrievals-aggregator.png"
+                size="sm"
+                showText={false}
+              />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
@@ -251,12 +259,20 @@ const NodesPage = memo(function NodesPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card id="success-rate-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Success Rate
-              </CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm font-medium">
+                  Success Rate
+                </CardTitle>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <DownloadButton
+                elementId="success-rate-card"
+                filename="success-rate.png"
+                size="sm"
+                showText={false}
+              />
             </CardHeader>
             <CardContent>
               {(() => {
@@ -280,12 +296,20 @@ const NodesPage = memo(function NodesPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card id="blocked-card">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium">
-                Blocked (451)
-              </CardTitle>
-              <Shield className="h-4 w-4 text-muted-foreground" />
+              <div className="flex items-center gap-2">
+                <CardTitle className="text-sm font-medium">
+                  Blocked (451)
+                </CardTitle>
+                <Shield className="h-4 w-4 text-muted-foreground" />
+              </div>
+              <DownloadButton
+                elementId="blocked-card"
+                filename="blocked-451.png"
+                size="sm"
+                showText={false}
+              />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
@@ -299,13 +323,19 @@ const NodesPage = memo(function NodesPage() {
         </div>
 
         {/* Line chart: uploads vs retrievals */}
-        <Card>
+        <Card id="uploads-vs-retrievals-chart">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Uploads vs Retrievals</CardTitle>
                 <CardDescription>Activity over time</CardDescription>
               </div>
+              <DownloadButton
+                elementId="uploads-vs-retrievals-chart"
+                filename="uploads-vs-retrievals.png"
+                size="sm"
+                showText={false}
+              />
             </div>
           </CardHeader>
           <CardContent>
@@ -372,7 +402,7 @@ const NodesPage = memo(function NodesPage() {
         </Card>
 
         {/* Stacked bar: success vs error types */}
-        <Card>
+        <Card id="status-codes-chart">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -381,6 +411,12 @@ const NodesPage = memo(function NodesPage() {
                   200, 404, 451, 500, 504 over time
                 </CardDescription>
               </div>
+              <DownloadButton
+                elementId="status-codes-chart"
+                filename="status-codes-distribution.png"
+                size="sm"
+                showText={false}
+              />
             </div>
           </CardHeader>
           <CardContent>
@@ -434,12 +470,22 @@ const NodesPage = memo(function NodesPage() {
 
         {/* Two-column: policies pie and size histogram */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <Card>
+          <Card id="retention-policies-chart">
             <CardHeader>
-              <CardTitle>Retention Policies</CardTitle>
-              <CardDescription>
-                Permanent vs deletable vs epoch-based
-              </CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Retention Policies</CardTitle>
+                  <CardDescription>
+                    Permanent vs deletable vs epoch-based
+                  </CardDescription>
+                </div>
+                <DownloadButton
+                  elementId="retention-policies-chart"
+                  filename="retention-policies.png"
+                  size="sm"
+                  showText={false}
+                />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="h-[260px]">
@@ -468,10 +514,20 @@ const NodesPage = memo(function NodesPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card id="blob-size-distribution-card">
             <CardHeader>
-              <CardTitle>Blob Size Distribution</CardTitle>
-              <CardDescription>Counts per size bucket</CardDescription>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Blob Size Distribution</CardTitle>
+                  <CardDescription>Counts per size bucket</CardDescription>
+                </div>
+                <DownloadButton
+                  elementId="blob-size-distribution-card"
+                  filename="blob-size-distribution.png"
+                  size="sm"
+                  showText={false}
+                />
+              </div>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 gap-2">
@@ -492,12 +548,22 @@ const NodesPage = memo(function NodesPage() {
         </div>
 
         {/* Quilt explorer */}
-        <Card>
+        <Card id="quilt-explorer-table">
           <CardHeader>
-            <CardTitle>Quilt Explorer</CardTitle>
-            <CardDescription>
-              Patch count and retrieval frequency
-            </CardDescription>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Quilt Explorer</CardTitle>
+                <CardDescription>
+                  Patch count and retrieval frequency
+                </CardDescription>
+              </div>
+              <DownloadButton
+                elementId="quilt-explorer-table"
+                filename="quilt-explorer.png"
+                size="sm"
+                showText={false}
+              />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">

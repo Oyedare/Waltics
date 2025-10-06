@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useTheme } from "next-themes";
 import { RefreshCw, MapPin, Globe, Users, Building } from "lucide-react";
+import { DownloadButton } from "@/components/ui/download-button";
 
 // Walrus node interface matching the API
 interface WalrusNode {
@@ -362,10 +363,18 @@ const NetworkMapPage = memo(function NetworkMapPage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-        <Card>
+        <Card id="total-nodes-network-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Nodes</CardTitle>
-            <Globe className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-sm font-medium">Total Nodes</CardTitle>
+              <Globe className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <DownloadButton
+              elementId="total-nodes-network-card"
+              filename="total-nodes-network.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{networkStats.totalNodes}</div>
@@ -375,10 +384,20 @@ const NetworkMapPage = memo(function NetworkMapPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card id="active-nodes-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Nodes</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-sm font-medium">
+                Active Nodes
+              </CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <DownloadButton
+              elementId="active-nodes-card"
+              filename="active-nodes.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{networkStats.activeNodes}</div>
@@ -393,10 +412,18 @@ const NetworkMapPage = memo(function NetworkMapPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card id="countries-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Countries</CardTitle>
-            <MapPin className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-sm font-medium">Countries</CardTitle>
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <DownloadButton
+              elementId="countries-card"
+              filename="countries.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{networkStats.countries}</div>
@@ -406,10 +433,18 @@ const NetworkMapPage = memo(function NetworkMapPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card id="cities-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Cities</CardTitle>
-            <Building className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-sm font-medium">Cities</CardTitle>
+              <Building className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <DownloadButton
+              elementId="cities-card"
+              filename="cities.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{networkStats.cities}</div>
@@ -419,10 +454,18 @@ const NetworkMapPage = memo(function NetworkMapPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card id="continents-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Continents</CardTitle>
-            <Globe className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-sm font-medium">Continents</CardTitle>
+              <Globe className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <DownloadButton
+              elementId="continents-card"
+              filename="continents.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{networkStats.continents}</div>
@@ -432,18 +475,28 @@ const NetworkMapPage = memo(function NetworkMapPage() {
       </div>
 
       {/* Map */}
-      <Card>
+      <Card id="network-map-card">
         <CardHeader>
-          <CardTitle>Walrus Network Map</CardTitle>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span>Active</span>
+          <div className="flex items-center justify-between">
+            <div>
+              <CardTitle>Walrus Network Map</CardTitle>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                  <span>Active</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                  <span>Inactive</span>
+                </div>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500"></div>
-              <span>Inactive</span>
-            </div>
+            <DownloadButton
+              elementId="network-map-card"
+              filename="network-map.png"
+              size="sm"
+              showText={false}
+            />
           </div>
         </CardHeader>
         <CardContent>
@@ -456,9 +509,17 @@ const NetworkMapPage = memo(function NetworkMapPage() {
       </Card>
 
       {/* Node Details Table */}
-      <Card>
+      <Card id="node-details-table">
         <CardHeader className="pb-3 sm:pb-4">
-          <CardTitle className="text-base sm:text-lg">Node Details</CardTitle>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base sm:text-lg">Node Details</CardTitle>
+            <DownloadButton
+              elementId="node-details-table"
+              filename="node-details.png"
+              size="sm"
+              showText={false}
+            />
+          </div>
         </CardHeader>
         <CardContent>
           {/* Desktop Table */}

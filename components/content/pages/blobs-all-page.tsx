@@ -6,6 +6,7 @@ import { useBlobs } from "@/hooks/use-blobs";
 import { formatBytes } from "@/lib/blob-utils";
 import { Download } from "lucide-react";
 import { downloadElementAsPng } from "@/lib/download";
+import { DownloadButton } from "@/components/ui/download-button";
 
 function formatDate(ts: number): string {
   try {
@@ -37,9 +38,17 @@ const BlobsAllPage = memo(function BlobsAllPage() {
 
   return (
     <div className="p-3 sm:p-4 lg:p-6 h-full space-y-4 sm:space-y-6 overflow-y-auto">
-      <Card>
+      <Card id="table-all-blobs">
         <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <CardTitle className="text-base sm:text-lg">All Blobs</CardTitle>
+          <div className="flex items-center justify-between w-full">
+            <CardTitle className="text-base sm:text-lg">All Blobs</CardTitle>
+            <DownloadButton
+              elementId="table-all-blobs"
+              filename="all-blobs.png"
+              size="sm"
+              showText={false}
+            />
+          </div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
             <span>
               Page {page + 1} of {Math.max(1, totalPages)}
@@ -49,10 +58,7 @@ const BlobsAllPage = memo(function BlobsAllPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <div
-            id="table-all-blobs"
-            className="rounded-md border border-border overflow-hidden"
-          >
+          <div className="rounded-md border border-border overflow-hidden">
             {/* Desktop Table */}
             <div className="hidden sm:block w-full overflow-x-auto">
               <table className="w-full text-sm">
@@ -265,15 +271,6 @@ const BlobsAllPage = memo(function BlobsAllPage() {
                 })()}
               </div>
               <div className="flex items-center gap-2 text-sm">
-                <button
-                  className="h-8 rounded-md px-3 border border-border disabled:opacity-50 cursor-pointer inline-flex items-center gap-1"
-                  onClick={() => {
-                    const el = document.getElementById("table-all-blobs");
-                    if (el) downloadElementAsPng(el, "all-blobs.png");
-                  }}
-                >
-                  <Download className="h-4 w-4" /> Download
-                </button>
                 <button
                   className="h-8 rounded-md px-3 border border-border disabled:opacity-50 cursor-pointer"
                   onClick={() => setPage(0)}

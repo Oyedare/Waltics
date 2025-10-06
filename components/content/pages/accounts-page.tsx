@@ -8,13 +8,11 @@ import {
   CardContent,
   CardDescription,
 } from "@/components/ui/card";
-import { Users } from "lucide-react";
 import { useTotalAccounts } from "@/hooks/use-total-accounts";
 import { formatNumber } from "@/lib/blob-utils";
 import { useTheme } from "next-themes";
 import { useAccountByHash } from "@/hooks/use-account-by-hash";
-import { Download } from "lucide-react";
-import { downloadElementAsPng } from "@/lib/download";
+import { DownloadButton } from "@/components/ui/download-button";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -54,7 +52,13 @@ const AccountsPage = memo(function AccountsPage() {
     }
   }
 
-  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Payload<number, string>[] }) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+  }: {
+    active?: boolean;
+    payload?: Payload<number, string>[];
+  }) => {
     if (!active || !payload || !payload.length) return null;
     const val = payload[0]?.value as number;
     const ts = payload[0]?.payload?.timestamp as number | undefined;
@@ -82,12 +86,19 @@ const AccountsPage = memo(function AccountsPage() {
   return (
     <div className="p-6 h-full space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card id="accounts-on-walrus-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Accounts on Walrus
             </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <DownloadButton
+                elementId="accounts-on-walrus-card"
+                filename="accounts-on-walrus.png"
+                size="sm"
+                showText={false}
+              />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -102,11 +113,11 @@ const AccountsPage = memo(function AccountsPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card id="account-growth-chart">
+          <CardHeader className="flex lg:flex-row flex-col lg:items-center justify-between">
             <div>
               <CardTitle>Account Growth Over Time</CardTitle>
-              <CardDescription>From getAccountsCountChart</CardDescription>
+              {/* <CardDescription>From getAccountsCountChart</CardDescription> */}
             </div>
             <div className="flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Period:</span>
@@ -121,6 +132,12 @@ const AccountsPage = memo(function AccountsPage() {
                 <option value="7D">7 Days</option>
                 <option value="30D">30 Days</option>
               </select>
+              <DownloadButton
+                elementId="account-growth-chart"
+                filename="account-growth.png"
+                size="sm"
+                showText={false}
+              />
             </div>
           </CardHeader>
           <CardContent>
@@ -206,10 +223,18 @@ const AccountsPage = memo(function AccountsPage() {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Account Details</CardTitle>
-            <CardDescription>Fetch account by address</CardDescription>
+        <Card id="account-detail-panel">
+          <CardHeader className="flex items-center justify-between">
+            <div>
+              <CardTitle>Account Details</CardTitle>
+              <CardDescription>Fetch account by address</CardDescription>
+            </div>
+            <DownloadButton
+              elementId="account-detail-panel"
+              filename="account-detail.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <AccountDetailsPanel />
@@ -230,7 +255,7 @@ function AccountDetailsPanel() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-2">
         <input
           value={address}
           onChange={(e) => setAddress(e.target.value)}
@@ -238,21 +263,11 @@ function AccountDetailsPanel() {
           className="h-9 flex-1 rounded-md border border-input bg-background px-3 text-sm outline-none focus:ring-2 ring-offset-0 ring-ring"
         />
         <button
-          className="h-9 rounded-md px-3 border border-border cursor-pointer"
+          className="h-9 rounded-md px-3 border border-border cursor-pointer exclude-from-export"
           onClick={() => refetch()}
           disabled={!addr || isFetching}
         >
           Fetch
-        </button>
-        <button
-          className="h-9 rounded-md px-3 border border-border cursor-pointer inline-flex items-center gap-1"
-          onClick={() => {
-            const el = document.getElementById("account-detail-panel");
-            if (el) downloadElementAsPng(el, "account-detail.png");
-          }}
-          disabled={!data}
-        >
-          <Download className="h-4 w-4" /> Download
         </button>
       </div>
 
@@ -269,10 +284,7 @@ function AccountDetailsPanel() {
       ) : !data ? (
         <div className="text-sm text-muted-foreground">No data.</div>
       ) : (
-        <div
-          id="account-detail-panel"
-          className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
           <div className="space-y-3">
             <div>
               <div className="text-xs text-muted-foreground">Address</div>

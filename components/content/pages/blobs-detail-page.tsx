@@ -6,6 +6,7 @@ import { useBlobById } from "@/hooks/use-blob-by-id";
 import { formatBytes } from "@/lib/blob-utils";
 import { Download } from "lucide-react";
 import { downloadElementAsPng } from "@/lib/download";
+import { DownloadButton } from "@/components/ui/download-button";
 
 const BlobsDetailPage = memo(function BlobsDetailPage() {
   const [inputId, setInputId] = useState("");
@@ -14,9 +15,17 @@ const BlobsDetailPage = memo(function BlobsDetailPage() {
 
   return (
     <div className="p-6 h-full space-y-6">
-      <Card>
+      <Card id="blob-detail-panel">
         <CardHeader className="flex items-start justify-between gap-3">
-          <CardTitle>Blob Details</CardTitle>
+          <div className="flex items-center justify-between w-full">
+            <CardTitle>Blob Details</CardTitle>
+            <DownloadButton
+              elementId="blob-detail-panel"
+              filename="blob-detail.png"
+              size="sm"
+              showText={false}
+            />
+          </div>
           <div className="flex items-center gap-2">
             <input
               value={inputId}
@@ -48,21 +57,7 @@ const BlobsDetailPage = memo(function BlobsDetailPage() {
             <div className="text-sm text-muted-foreground">No data.</div>
           ) : (
             <>
-              <div className="flex items-center justify-end mb-3">
-                <button
-                  className="h-8 px-3 rounded-md border border-border text-sm cursor-pointer inline-flex items-center gap-1"
-                  onClick={() => {
-                    const el = document.getElementById("blob-detail-panel");
-                    if (el) downloadElementAsPng(el, "blob-detail.png");
-                  }}
-                >
-                  <Download className="h-4 w-4" /> Download
-                </button>
-              </div>
-              <div
-                id="blob-detail-panel"
-                className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm"
-              >
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
                 <div className="space-y-3">
                   <div>
                     <div className="text-xs text-muted-foreground">

@@ -21,6 +21,9 @@ type ContentType =
   | "chatbot"
   | "network-map"
   | "storage-calculator"
+  | "sui-overview"
+  | "sui-validators"
+  | "sui-network-map"
   | null;
 
 interface ContentContextType {
@@ -31,7 +34,9 @@ interface ContentContextType {
 const ContentContext = createContext<ContentContextType | undefined>(undefined);
 
 export function ContentProvider({ children }: { children: React.ReactNode }) {
-  const [activeContent, setActiveContent] = useState<ContentType>("overview");
+  const [activeContent, setActiveContent] = useState<ContentType>(
+    "market-overview" as ContentType
+  );
   const pathname = usePathname();
 
   // Sync URL with active content
@@ -40,8 +45,8 @@ export function ContentProvider({ children }: { children: React.ReactNode }) {
     if (path && path !== activeContent) {
       setActiveContent(path as ContentType);
     } else if (!path || path === "") {
-      // Default to overview when no path
-      setActiveContent("overview");
+      // Default to market overview when no path
+      setActiveContent("market-overview" as ContentType);
     }
   }, [pathname, activeContent]);
 

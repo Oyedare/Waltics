@@ -12,6 +12,10 @@ import {
   MessageSquare,
   Map,
   Calculator,
+  Globe,
+  Newspaper,
+  ChartBar,
+  Rocket,
 } from "lucide-react";
 
 import {
@@ -26,110 +30,162 @@ import {
   SidebarMenuItem,
   // SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { useContent } from "@/lib/content-context";
+import { usePathname } from "next/navigation";
 
-// Dashboard navigation items per user's structure
-const overviewItems = [
+const latestItems = [
   {
-    title: "Overview",
-    url: "#overview",
-    icon: BarChart3,
+    title: "Market Overview",
+    url: "/",
+    icon: Globe,
+  },
+  {
+    title: "News",
+    url: "/news",
+    icon: Newspaper,
+  },
+
+  {
+    title: "Invest",
+    url: "/invest",
+    icon: ChartBar,
   },
 ];
 
-const blobsItems = [
+// Sui section
+const suiItems = [
+  {
+    title: "Sui Overview",
+    url: "/sui/overview",
+    icon: BarChart3,
+  },
+  {
+    title: "Validators",
+    url: "/sui/validators",
+    icon: Server,
+  },
+  {
+    title: "Network Map",
+    url: "/sui/network-map",
+    icon: Map,
+  },
+];
+
+const walrusItems = [
+  {
+    title: "Walrus Overview",
+    url: "/overview",
+    icon: BarChart3,
+  },
   {
     title: "All Blobs",
-    url: "#blobs-all",
+    url: "/blobs-all",
     icon: Database,
   },
   {
     title: "Blob Details",
-    url: "#blobs-detail",
+    url: "/blobs-detail",
     icon: FileText,
   },
   {
     title: "Account Blobs",
-    url: "#blobs-account",
+    url: "/blobs-account",
     icon: Search,
   },
-];
-
-const accountsItems = [
   {
     title: "Accounts",
-    url: "#accounts",
+    url: "/accounts",
     icon: Users,
   },
-];
-
-// const nodesItems = [
-//   {
-//     title: "Nodes",
-//     url: "#nodes",
-//     icon: Server,
-//   },
-// ];
-
-const providersItems = [
   {
     title: "Storage Providers",
-    url: "#storage-providers",
+    url: "/storage-providers",
     icon: Layers,
+  },
+  {
+    title: "Storage Calculator",
+    url: "/storage-calculator",
+    icon: Calculator,
+  },
+  // {
+  //   title: "Network Map",
+  //   url: "/network-map",
+  //   icon: Map,
+  // },
+];
+
+const nexaItems = [
+  {
+    title: "Latest Created Coins",
+    url: "/nexa/latest-created-coins",
+    icon: Rocket,
+  },
+  {
+    title: "Latest Meme Launcher",
+    url: "/nexa/latest-meme-launcher",
+    icon: Rocket,
+  },
+  {
+    title: "Trending Coins",
+    url: "/nexa/trending-coins",
+    icon: Rocket,
+  },
+  {
+    title: "Safety Check",
+    url: "/nexa/safety-check",
+    icon: Rocket,
+  },
+  {
+    title: "Top Gainers",
+    url: "/nexa/top-gainers",
+    icon: Rocket,
+  },
+  {
+    title: "Top Holder Quality",
+    url: "/nexa/top-holder-quality",
+    icon: Rocket,
+  },
+  {
+    title: "Top Trade Count",
+    url: "/nexa/top-trade-count",
+    icon: Rocket,
   },
 ];
 
 const chatbotItems = [
   {
     title: "AI Assistant",
-    url: "#chatbot",
+    url: "/chatbot",
     icon: MessageSquare,
   },
 ];
 
-const networkItems = [
-  {
-    title: "Network Map",
-    url: "#network-map",
-    icon: Map,
-  },
-];
-
-const calculatorItems = [
-  {
-    title: "Storage Calculator",
-    url: "#storage-calculator",
-    icon: Calculator,
-  },
-];
-
 const AppSidebar = memo(function AppSidebar() {
-  const { activeContent } = useContent();
+  const pathname = usePathname();
 
   return (
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center justify-between px-2 py-3">
-          <h1 className="text-lg font-bold text-foreground">Waltics</h1>
+          <h1 className="text-lg font-bold text-primary">Sui Dashboard</h1>
           {/* <SidebarTrigger className="h-8 w-8" /> */}
         </div>
       </SidebarHeader>
       <SidebarContent>
-        {/* Section - Overview */}
+        {/* Latest Sction */}
         <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Overview
+          <SidebarGroupLabel className="text-xs font-semibold text-primary uppercase tracking-wider">
+            Latest
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {overviewItems.map((item) => (
+              {latestItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    isActive={activeContent === item.url.replace("#", "")}
+                    isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={`/${item.url.replace("#", "")}`}>
+                    <Link href={item.url}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -140,21 +196,21 @@ const AppSidebar = memo(function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Section - Blobs */}
+        {/* Sui Section */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Blobs
+            Sui
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {blobsItems.map((item) => (
+              {suiItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    isActive={activeContent === item.url.replace("#", "")}
+                    isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={`/${item.url.replace("#", "")}`}>
+                    <Link href={item.url}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -165,21 +221,21 @@ const AppSidebar = memo(function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Section - Accounts */}
+        {/* Walrus Section */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Accounts
+            Walrus
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {accountsItems.map((item) => (
+              {walrusItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    isActive={activeContent === item.url.replace("#", "")}
+                    isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={`/${item.url.replace("#", "")}`}>
+                    <Link href={item.url}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -190,21 +246,21 @@ const AppSidebar = memo(function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Section - Providers */}
+        {/* Nexa Section */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Providers
+            Nexa
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {providersItems.map((item) => (
+              {nexaItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    isActive={activeContent === item.url.replace("#", "")}
+                    isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={`/${item.url.replace("#", "")}`}>
+                    <Link href={item.url}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -215,84 +271,10 @@ const AppSidebar = memo(function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* Section - Calculator */}
+        {/* Chatbot Section */}
         <SidebarGroup>
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Tools
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {calculatorItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={activeContent === item.url.replace("#", "")}
-                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
-                  >
-                    <Link href={`/${item.url.replace("#", "")}`}>
-                      <item.icon className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground/90">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* Section - Network */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Network
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {networkItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={activeContent === item.url.replace("#", "")}
-                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
-                  >
-                    <Link href={`/${item.url.replace("#", "")}`}>
-                      <item.icon className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground/90">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            Nodes
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {nodesItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={activeContent === item.url.replace("#", "")}
-                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
-                  >
-                    <Link href={`/${item.url.replace("#", "")}`}>
-                      <item.icon className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-foreground/90">{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup> */}
-
-        {/* Section - AI Assistant */}
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
-            AI
+            Chatbot
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -300,10 +282,10 @@ const AppSidebar = memo(function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
-                    isActive={activeContent === item.url.replace("#", "")}
+                    isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={`/${item.url.replace("#", "")}`}>
+                    <Link href={item.url}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>

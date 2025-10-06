@@ -4,6 +4,9 @@ import React, { memo, useMemo, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useAccountBlobsPaginated } from "@/hooks/use-account-blobs";
 import { formatBytes } from "@/lib/blob-utils";
+import { Download } from "lucide-react";
+import { downloadElementAsPng } from "@/lib/download";
+import { DownloadButton } from "@/components/ui/download-button";
 
 function formatDate(ts: number): string {
   try {
@@ -34,9 +37,17 @@ const BlobsAccountPage = memo(function BlobsAccountPage() {
 
   return (
     <div className="p-6 h-full space-y-6">
-      <Card>
+      <Card id="table-account-blobs">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Account Blobs</CardTitle>
+          <div className="flex items-center justify-between w-full">
+            <CardTitle>Account Blobs</CardTitle>
+            <DownloadButton
+              elementId="table-account-blobs"
+              filename="account-blobs.png"
+              size="sm"
+              showText={false}
+            />
+          </div>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             {accountAddress && (
               <>

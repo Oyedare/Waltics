@@ -24,6 +24,7 @@ import {
 } from "recharts";
 import { PieChart, Pie, Cell } from "recharts";
 import { downloadElementAsPng } from "@/lib/download";
+import { DownloadButton } from "@/components/ui/download-button";
 // import type { TooltipProps } from "recharts";
 import { Payload } from "recharts/types/component/DefaultTooltipContent";
 
@@ -97,12 +98,20 @@ const OverviewPage = memo(function OverviewPage() {
   return (
     <div className="p-3 sm:p-4 lg:p-6 h-full space-y-4 sm:space-y-6 overflow-y-auto">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-        <Card>
+        <Card id="total-blobs-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Blobs Stored
-            </CardTitle>
-            <Database className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-sm font-medium">
+                Total Blobs Stored
+              </CardTitle>
+              <Database className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <DownloadButton
+              elementId="total-blobs-card"
+              filename="total-blobs-stored.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -110,10 +119,20 @@ const OverviewPage = memo(function OverviewPage() {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card id="avg-blob-size-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Blob Size</CardTitle>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-sm font-medium">
+                Avg Blob Size
+              </CardTitle>
+              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <DownloadButton
+              elementId="avg-blob-size-card"
+              filename="avg-blob-size.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -125,12 +144,20 @@ const OverviewPage = memo(function OverviewPage() {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card id="total-accounts-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Total Accounts
-            </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <div className="flex items-center gap-2">
+              <CardTitle className="text-sm font-medium">
+                Total Accounts
+              </CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </div>
+            <DownloadButton
+              elementId="total-accounts-card"
+              filename="total-accounts.png"
+              size="sm"
+              showText={false}
+            />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -145,17 +172,17 @@ const OverviewPage = memo(function OverviewPage() {
       </div>
 
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
-        <Card>
+        <Card id="overview-blobs-chart">
           <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
             <div>
               <CardTitle className="text-base sm:text-lg">
                 Blob Growth Over Time
               </CardTitle>
-              <CardDescription className="text-xs sm:text-sm">
+              {/* <CardDescription className="text-xs sm:text-sm">
                 Time-series from getBlobsCountChart
-              </CardDescription>
+              </CardDescription> */}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 exclude-from-export">
               <span className="text-sm text-muted-foreground">Period:</span>
               <select
                 value={period}
@@ -169,7 +196,7 @@ const OverviewPage = memo(function OverviewPage() {
                 <option value="30D">30 Days</option>
               </select>
               <button
-                className="h-8 px-3 rounded-md border border-border text-sm cursor-pointer inline-flex items-center gap-1"
+                className="h-8 px-3 rounded-md border border-border text-sm cursor-pointer inline-flex items-center gap-1 exclude-from-export"
                 onClick={() => {
                   const el = document.getElementById("overview-blobs-chart");
                   if (el) downloadElementAsPng(el, "blob-growth.png");
@@ -180,7 +207,7 @@ const OverviewPage = memo(function OverviewPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div id="overview-blobs-chart" className="h-[300px]">
+            <div className="h-[300px]">
               {isLoading ? (
                 <div className="h-full rounded-md bg-muted" />
               ) : isError ? (
@@ -262,13 +289,13 @@ const OverviewPage = memo(function OverviewPage() {
             </div>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+        <Card id="overview-size-pie">
+          <CardHeader className="flex lg:flex-row flex-col lg:items-center justify-between">
             <div>
               <CardTitle>Blob Size Distribution</CardTitle>
-              <CardDescription>From getAvgBlobSizeChart</CardDescription>
+              {/* <CardDescription>From getAvgBlobSizeChart</CardDescription> */}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 exclude-from-export">
               <span className="text-sm text-muted-foreground">Period:</span>
               <select
                 value={period}
@@ -282,7 +309,7 @@ const OverviewPage = memo(function OverviewPage() {
                 <option value="30D">30 Days</option>
               </select>
               <button
-                className="h-8 px-3 rounded-md border border-border text-sm cursor-pointer inline-flex items-center gap-1"
+                className="h-8 px-3 rounded-md border border-border text-sm cursor-pointer inline-flex items-center gap-1 exclude-from-export"
                 onClick={() => {
                   const el = document.getElementById("overview-size-pie");
                   if (el)
@@ -294,7 +321,7 @@ const OverviewPage = memo(function OverviewPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div id="overview-size-pie" className="h-[300px]">
+            <div className="h-[400px] lg:h-[320px]">
               {avgQuery.isLoading ? (
                 <div className="h-full rounded-md bg-muted" />
               ) : avgQuery.isError ? (
@@ -396,8 +423,10 @@ const OverviewPage = memo(function OverviewPage() {
                                 data={slices}
                                 dataKey="value"
                                 nameKey="name"
-                                innerRadius={70}
-                                outerRadius={110}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius="45%"
+                                outerRadius="80%"
                                 stroke={isDark ? "#111827" : "#FFFFFF"}
                                 strokeWidth={6}
                                 paddingAngle={2}
