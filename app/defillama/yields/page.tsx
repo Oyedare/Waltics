@@ -15,6 +15,14 @@ import {
   YAxis,
 } from "recharts";
 import { DownloadButton } from "@/components/ui/download-button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function DefillamaYieldsPage() {
   const formatCompact = (n: number) => {
@@ -147,7 +155,7 @@ function TopPoolsChart() {
 
   return (
     <div className="border rounded-lg p-4" id="top-pools-chart">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">Top 10 Pools by APY</h3>
         <DownloadButton
           elementId="top-pools-chart"
@@ -171,7 +179,7 @@ function TopPoolsChart() {
             <BarChart
               data={chartData}
               layout="vertical"
-              margin={{ top: 5, right: 30, left: 120, bottom: 5 }}
+              margin={{ top: 5, right: 30, left: 0, bottom: 5 }}
             >
               <XAxis
                 type="number"
@@ -192,7 +200,7 @@ function TopPoolsChart() {
                 }}
                 axisLine={false}
                 tickLine={false}
-                width={110}
+                width={100}
               />
               <Tooltip
                 content={({ active, payload }) => {
@@ -294,7 +302,7 @@ function TvlDistributionChart({
 
   return (
     <div className="border rounded-lg p-4" id="tvl-distribution-chart">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">TVL Distribution by Protocol</h3>
         <DownloadButton
           elementId="tvl-distribution-chart"
@@ -302,7 +310,7 @@ function TvlDistributionChart({
         />
       </div>
 
-      <div className="h-[400px]">
+      <div className="h-[550px] md:h-[400px]">
         {isLoading ? (
           <div className="h-full rounded-md bg-muted animate-pulse" />
         ) : error ? (
@@ -315,7 +323,7 @@ function TvlDistributionChart({
           </div>
         ) : (
           <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
-            <div className="h-full">
+            <div className="h-[250px] md:h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Tooltip
@@ -440,73 +448,75 @@ function YieldsTable({
 
   return (
     <div className="border rounded-lg p-4" id="all-yield-pools-sui-table">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">All Yield Pools on Sui</h3>
         <DownloadButton
           elementId="all-yield-pools-sui-table"
           filename="sui-all-yield-pools.png"
         />
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="border-b">
-            <tr className="text-left">
-              <th className="pb-2 font-medium">Rank</th>
-              <th className="pb-2 font-medium">Protocol</th>
-              <th className="pb-2 font-medium">Asset</th>
-              <th className="pb-2 font-medium text-right">APY</th>
-              <th className="pb-2 font-medium text-right">TVL</th>
-              <th className="pb-2 font-medium text-center">IL Risk</th>
-              <th className="pb-2 font-medium text-center">Outlook</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pools.map((pool, index) => {
-              const predictionClass = pool.predictions?.predictedClass;
-              const confidence = pool.predictions?.binnedConfidence;
-              return (
-                <tr key={pool.poolId} className="border-b last:border-0">
-                  <td className="py-3 text-muted-foreground">#{index + 1}</td>
-                  <td className="py-3 font-medium">{pool.project}</td>
-                  <td className="py-3 text-muted-foreground">{pool.symbol}</td>
-                  <td className="py-3 text-right font-medium text-green-600">
-                    {pool.apy.toFixed(2)}%
-                  </td>
-                  <td className="py-3 text-right">
-                    ${formatCompact(pool.tvlUsd)}
-                  </td>
-                  <td className="py-3 text-center">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Rank</TableHead>
+            <TableHead>Protocol</TableHead>
+            <TableHead>Asset</TableHead>
+            <TableHead className="text-right">APY</TableHead>
+            <TableHead className="text-right">TVL</TableHead>
+            <TableHead className="text-center">IL Risk</TableHead>
+            <TableHead className="text-center">Outlook</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {pools.map((pool, index) => {
+            const predictionClass = pool.predictions?.predictedClass;
+            const confidence = pool.predictions?.binnedConfidence;
+            return (
+              <TableRow key={pool.poolId}>
+                <TableCell className="text-muted-foreground">
+                  #{index + 1}
+                </TableCell>
+                <TableCell className="font-medium">{pool.project}</TableCell>
+                <TableCell className="text-muted-foreground">
+                  {pool.symbol}
+                </TableCell>
+                <TableCell className="text-right font-medium text-green-600">
+                  {pool.apy.toFixed(2)}%
+                </TableCell>
+                <TableCell className="text-right">
+                  ${formatCompact(pool.tvlUsd)}
+                </TableCell>
+                <TableCell className="text-center">
+                  <span
+                    className={`px-2 py-0.5 rounded text-xs ${
+                      pool.ilRisk === "no"
+                        ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                        : "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
+                    }`}
+                  >
+                    {pool.ilRisk === "no" ? "No" : "Yes"}
+                  </span>
+                </TableCell>
+                <TableCell className="text-center">
+                  {predictionClass && confidence ? (
                     <span
                       className={`px-2 py-0.5 rounded text-xs ${
-                        pool.ilRisk === "no"
-                          ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
-                          : "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
+                        predictionClass === "Stable/Up"
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
+                          : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
                       }`}
                     >
-                      {pool.ilRisk === "no" ? "No" : "Yes"}
+                      {predictionClass} ({confidence})
                     </span>
-                  </td>
-                  <td className="py-3 text-center">
-                    {predictionClass && confidence ? (
-                      <span
-                        className={`px-2 py-0.5 rounded text-xs ${
-                          predictionClass === "Stable/Up"
-                            ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
-                            : "bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
-                        }`}
-                      >
-                        {predictionClass} ({confidence})
-                      </span>
-                    ) : (
-                      <span className="text-muted-foreground">-</span>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 }

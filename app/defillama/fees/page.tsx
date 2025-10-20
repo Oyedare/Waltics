@@ -4,6 +4,14 @@ import { StatCard } from "@/components/stat-card";
 import { useSuiFees24h, useSuiRevenue24h } from "@/hooks/use-defillama";
 import { DownloadButton } from "@/components/ui/download-button";
 import Image from "next/image";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function DefillamaFeesPage() {
   const formatCompact = (n: number) => {
@@ -229,7 +237,7 @@ function ProtocolsTable({
       className="border rounded-lg p-4"
       id="all-protocols-fees-revenue-table"
     >
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">
           All Protocols - Fees & Revenue (24h)
         </h3>
@@ -238,92 +246,92 @@ function ProtocolsTable({
           filename="sui-all-protocols-fees-revenue.png"
         />
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="border-b">
-            <tr className="text-left">
-              <th className="pb-2 font-medium">Rank</th>
-              <th className="pb-2 font-medium">Protocol</th>
-              <th className="pb-2 font-medium">Category</th>
-              <th className="pb-2 font-medium text-right">Fees (24h)</th>
-              <th className="pb-2 font-medium text-right">Revenue (24h)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {protocols.map((protocol, index) => {
-              const feesNeg = (protocol.feesChange1d ?? 0) < 0;
-              const revNeg = (protocol.revenueChange1d ?? 0) < 0;
-              return (
-                <tr key={protocol.id} className="border-b last:border-0">
-                  <td className="py-3 text-muted-foreground">#{index + 1}</td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      {protocol.logo ? (
-                        <Image
-                          width={24}
-                          height={24}
-                          src={protocol.logo}
-                          alt={protocol.name}
-                          className="w-6 h-6 rounded-full"
-                          onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                          }}
-                        />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs">
-                          {protocol.name.charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                      <span>{protocol.name}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 text-muted-foreground">
-                    {protocol.category || "-"}
-                  </td>
-                  <td className="py-3 text-right">
-                    <div className="flex flex-col items-end">
-                      <span>
-                        {protocol.fees24h != null
-                          ? `$${formatCompact(protocol.fees24h)}`
-                          : "-"}
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Rank</TableHead>
+            <TableHead>Protocol</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead className="text-right">Fees (24h)</TableHead>
+            <TableHead className="text-right">Revenue (24h)</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {protocols.map((protocol, index) => {
+            const feesNeg = (protocol.feesChange1d ?? 0) < 0;
+            const revNeg = (protocol.revenueChange1d ?? 0) < 0;
+            return (
+              <TableRow key={protocol.id}>
+                <TableCell className="text-muted-foreground">
+                  #{index + 1}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    {protocol.logo ? (
+                      <Image
+                        width={24}
+                        height={24}
+                        src={protocol.logo}
+                        alt={protocol.name}
+                        className="w-6 h-6 rounded-full"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs">
+                        {protocol.name.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <span>{protocol.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {protocol.category || "-"}
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex flex-col items-end">
+                    <span>
+                      {protocol.fees24h != null
+                        ? `$${formatCompact(protocol.fees24h)}`
+                        : "-"}
+                    </span>
+                    {protocol.feesChange1d != null && (
+                      <span
+                        className={`text-xs ${
+                          feesNeg ? "text-red-600" : "text-green-600"
+                        }`}
+                      >
+                        {feesNeg ? "" : "+"}
+                        {protocol.feesChange1d.toFixed(2)}%
                       </span>
-                      {protocol.feesChange1d != null && (
-                        <span
-                          className={`text-xs ${
-                            feesNeg ? "text-red-600" : "text-green-600"
-                          }`}
-                        >
-                          {feesNeg ? "" : "+"}
-                          {protocol.feesChange1d.toFixed(2)}%
-                        </span>
-                      )}
-                    </div>
-                  </td>
-                  <td className="py-3 text-right">
-                    <div className="flex flex-col items-end">
-                      <span>
-                        {protocol.revenue24h != null
-                          ? `$${formatCompact(protocol.revenue24h)}`
-                          : "-"}
+                    )}
+                  </div>
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex flex-col items-end">
+                    <span>
+                      {protocol.revenue24h != null
+                        ? `$${formatCompact(protocol.revenue24h)}`
+                        : "-"}
+                    </span>
+                    {protocol.revenueChange1d != null && (
+                      <span
+                        className={`text-xs ${
+                          revNeg ? "text-red-600" : "text-green-600"
+                        }`}
+                      >
+                        {revNeg ? "" : "+"}
+                        {protocol.revenueChange1d.toFixed(2)}%
                       </span>
-                      {protocol.revenueChange1d != null && (
-                        <span
-                          className={`text-xs ${
-                            revNeg ? "text-red-600" : "text-green-600"
-                          }`}
-                        >
-                          {revNeg ? "" : "+"}
-                          {protocol.revenueChange1d.toFixed(2)}%
-                        </span>
-                      )}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 }

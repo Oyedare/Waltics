@@ -20,6 +20,14 @@ import {
 } from "recharts";
 import { DownloadButton } from "@/components/ui/download-button";
 import Image from "next/image";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function DefillamaStablecoinsPage() {
   const formatCompact = (n: number) => {
@@ -137,7 +145,7 @@ function MarketCapChart({
 
   return (
     <div className="border rounded-lg p-4" id="stablecoin-mcap-chart">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">Market Cap History</h3>
         <div className="flex items-center gap-2">
           <div className="flex gap-1 border rounded-md p-1">
@@ -295,7 +303,7 @@ function DominanceChart() {
 
   return (
     <div className="border rounded-lg p-4" id="stablecoin-dominance-chart">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">Stablecoin Dominance</h3>
         <DownloadButton
           elementId="stablecoin-dominance-chart"
@@ -303,7 +311,7 @@ function DominanceChart() {
         />
       </div>
 
-      <div className="h-[320px]">
+      <div className="h-[400px] md:h-[320px]">
         {isLoading ? (
           <div className="h-full rounded-md bg-muted animate-pulse" />
         ) : error ? (
@@ -316,7 +324,7 @@ function DominanceChart() {
           </div>
         ) : (
           <div className="h-full grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
-            <div className="h-full">
+            <div className="h-[250px] md:h-full">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Tooltip
@@ -439,71 +447,71 @@ function StablecoinsTable({
 
   return (
     <div className="border rounded-lg p-4" id="all-stablecoins-sui-table">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">All Stablecoins on Sui</h3>
         <DownloadButton
           elementId="all-stablecoins-sui-table"
           filename="sui-all-stablecoins.png"
         />
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="border-b">
-            <tr className="text-left">
-              <th className="pb-2 font-medium">Rank</th>
-              <th className="pb-2 font-medium">Stablecoin</th>
-              <th className="pb-2 font-medium">Symbol</th>
-              <th className="pb-2 font-medium text-right">Circulating (SUI)</th>
-              <th className="pb-2 font-medium text-right">Market Cap</th>
-              <th className="pb-2 font-medium text-right">Dominance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {stablecoins.map((stablecoin, index) => {
-              const dominance =
-                totalMcap > 0 ? (stablecoin.marketCap / totalMcap) * 100 : 0;
-              return (
-                <tr key={stablecoin.id} className="border-b last:border-0">
-                  <td className="py-3 text-muted-foreground">#{index + 1}</td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      {stablecoin.logo ? (
-                        <Image
-                          width={24}
-                          height={24}
-                          src={stablecoin.logo}
-                          alt={stablecoin.name}
-                          className="w-6 h-6 rounded-full"
-                          onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                          }}
-                        />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs">
-                          {stablecoin.symbol.charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                      <span className="font-medium">{stablecoin.name}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 text-muted-foreground">
-                    {stablecoin.symbol}
-                  </td>
-                  <td className="py-3 text-right font-medium">
-                    {formatCompact(stablecoin.circulatingSui)}
-                  </td>
-                  <td className="py-3 text-right font-medium">
-                    ${formatCompact(stablecoin.marketCap)}
-                  </td>
-                  <td className="py-3 text-right text-muted-foreground">
-                    {dominance.toFixed(2)}%
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Rank</TableHead>
+            <TableHead>Stablecoin</TableHead>
+            <TableHead>Symbol</TableHead>
+            <TableHead className="text-right">Circulating (SUI)</TableHead>
+            <TableHead className="text-right">Market Cap</TableHead>
+            <TableHead className="text-right">Dominance</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {stablecoins.map((stablecoin, index) => {
+            const dominance =
+              totalMcap > 0 ? (stablecoin.marketCap / totalMcap) * 100 : 0;
+            return (
+              <TableRow key={stablecoin.id}>
+                <TableCell className="text-muted-foreground">
+                  #{index + 1}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    {stablecoin.logo ? (
+                      <Image
+                        width={24}
+                        height={24}
+                        src={stablecoin.logo}
+                        alt={stablecoin.name}
+                        className="w-6 h-6 rounded-full"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs">
+                        {stablecoin.symbol.charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                    <span className="font-medium">{stablecoin.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {stablecoin.symbol}
+                </TableCell>
+                <TableCell className="text-right font-medium">
+                  {formatCompact(stablecoin.circulatingSui)}
+                </TableCell>
+                <TableCell className="text-right font-medium">
+                  ${formatCompact(stablecoin.marketCap)}
+                </TableCell>
+                <TableCell className="text-right text-muted-foreground">
+                  {dominance.toFixed(2)}%
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 }

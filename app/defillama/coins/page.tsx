@@ -147,7 +147,7 @@ function PriceChart() {
 
   return (
     <div className="border rounded-lg p-4" id="sui-price-chart">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">SUI Price History</h3>
         <div className="flex items-center gap-2">
           <div className="flex gap-1 border rounded-md p-1">
@@ -297,7 +297,7 @@ function TokenLookup() {
           </div>
         ) : rows.length > 0 ? (
           <div id="token-lookup-results">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
               <div className="text-sm font-medium">Results</div>
               <DownloadButton
                 elementId="token-lookup-results"

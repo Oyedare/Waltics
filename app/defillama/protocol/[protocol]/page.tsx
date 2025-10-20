@@ -19,7 +19,7 @@ export default function ProtocolDetailPage() {
       <h2 className="text-xl font-semibold">Protocol: {slug}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="p-4">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
             <div className="text-sm text-muted-foreground">Overview</div>
             <DownloadButton
               elementId="protocol-overview-card"
@@ -99,7 +99,7 @@ export default function ProtocolDetailPage() {
           ) : null}
         </Card>
         <Card className="p-4">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-3">
             <div className="text-sm font-medium">TVL Series (last points)</div>
             <DownloadButton
               elementId="protocol-tvl-card"

@@ -14,6 +14,14 @@ import {
 } from "recharts";
 import { DownloadButton } from "@/components/ui/download-button";
 import Image from "next/image";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export default function DefillamaDexesPage() {
   const formatCompact = (n: number) => {
@@ -161,7 +169,7 @@ function VolumeChart({
 
   return (
     <div className="border rounded-lg p-4" id="dex-volume-chart">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">Volume History</h3>
         <div className="flex items-center gap-2">
           <div className="flex gap-1 border rounded-md p-1">
@@ -324,83 +332,81 @@ function DexsTable({
 
   return (
     <div className="border rounded-lg p-4" id="all-dexs-sui-table">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 mb-4">
         <h3 className="text-lg font-semibold">All DEXs on Sui</h3>
         <DownloadButton
           elementId="all-dexs-sui-table"
           filename="sui-all-dexs.png"
         />
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="border-b">
-            <tr className="text-left">
-              <th className="pb-2 font-medium">Rank</th>
-              <th className="pb-2 font-medium">DEX</th>
-              <th className="pb-2 font-medium">Category</th>
-              <th className="pb-2 font-medium text-right">Volume (24h)</th>
-              <th className="pb-2 font-medium text-right">Volume (7d)</th>
-              <th className="pb-2 font-medium text-right">24h Change</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sortedDexs.map((dex, index) => {
-              const neg = (dex.change1d ?? 0) < 0;
-              return (
-                <tr key={dex.id} className="border-b last:border-0">
-                  <td className="py-3 text-muted-foreground">#{index + 1}</td>
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      {dex.logo ? (
-                        <Image
-                          width={24}
-                          height={24}
-                          src={dex.logo}
-                          alt={dex.name}
-                          className="w-6 h-6 rounded-full"
-                          onError={(e) => {
-                            e.currentTarget.style.display = "none";
-                          }}
-                        />
-                      ) : (
-                        <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs">
-                          {dex.name.charAt(0).toUpperCase()}
-                        </div>
-                      )}
-                      <span className="font-medium">{dex.name}</span>
-                    </div>
-                  </td>
-                  <td className="py-3 text-muted-foreground">
-                    {dex.category || "-"}
-                  </td>
-                  <td className="py-3 text-right font-medium">
-                    {dex.total24h != null
-                      ? `$${formatCompact(dex.total24h)}`
-                      : "-"}
-                  </td>
-                  <td className="py-3 text-right">
-                    {dex.total7d != null
-                      ? `$${formatCompact(dex.total7d)}`
-                      : "-"}
-                  </td>
-                  <td className="py-3 text-right">
-                    {dex.change1d != null ? (
-                      <span
-                        className={`${neg ? "text-red-600" : "text-green-600"}`}
-                      >
-                        {neg ? "" : "+"}
-                        {dex.change1d.toFixed(2)}%
-                      </span>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Rank</TableHead>
+            <TableHead>DEX</TableHead>
+            <TableHead>Category</TableHead>
+            <TableHead className="text-right">Volume (24h)</TableHead>
+            <TableHead className="text-right">Volume (7d)</TableHead>
+            <TableHead className="text-right">24h Change</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {sortedDexs.map((dex, index) => {
+            const neg = (dex.change1d ?? 0) < 0;
+            return (
+              <TableRow key={dex.id}>
+                <TableCell className="text-muted-foreground">
+                  #{index + 1}
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    {dex.logo ? (
+                      <Image
+                        width={24}
+                        height={24}
+                        src={dex.logo}
+                        alt={dex.name}
+                        className="w-6 h-6 rounded-full"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
+                      />
                     ) : (
-                      "-"
+                      <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs">
+                        {dex.name.charAt(0).toUpperCase()}
+                      </div>
                     )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+                    <span className="font-medium">{dex.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                  {dex.category || "-"}
+                </TableCell>
+                <TableCell className="text-right font-medium">
+                  {dex.total24h != null
+                    ? `$${formatCompact(dex.total24h)}`
+                    : "-"}
+                </TableCell>
+                <TableCell className="text-right">
+                  {dex.total7d != null ? `$${formatCompact(dex.total7d)}` : "-"}
+                </TableCell>
+                <TableCell className="text-right">
+                  {dex.change1d != null ? (
+                    <span
+                      className={`${neg ? "text-red-600" : "text-green-600"}`}
+                    >
+                      {neg ? "" : "+"}
+                      {dex.change1d.toFixed(2)}%
+                    </span>
+                  ) : (
+                    "-"
+                  )}
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 }

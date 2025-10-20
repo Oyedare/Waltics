@@ -25,6 +25,7 @@ import {
   Award,
   Activity,
   ArrowUpCircle,
+  X,
 } from "lucide-react";
 
 import {
@@ -37,9 +38,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
   // SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const latestItems = [
   {
@@ -208,13 +211,29 @@ const defillamaItems = [
 
 const AppSidebar = memo(function AppSidebar() {
   const pathname = usePathname();
+  const { setOpenMobile, isMobile } = useSidebar();
+
+  const handleLinkClick = () => {
+    if (isMobile) {
+      setOpenMobile(false);
+    }
+  };
 
   return (
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border">
         <div className="flex items-center justify-between px-2 py-3">
           <h1 className="text-lg font-bold text-primary">Sui Dashboard</h1>
-          {/* <SidebarTrigger className="h-8 w-8" /> */}
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 md:hidden"
+              onClick={() => setOpenMobile(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          )}
         </div>
       </SidebarHeader>
       <SidebarContent>
@@ -232,7 +251,7 @@ const AppSidebar = memo(function AppSidebar() {
                     isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={handleLinkClick}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -257,7 +276,7 @@ const AppSidebar = memo(function AppSidebar() {
                     isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={handleLinkClick}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -282,7 +301,7 @@ const AppSidebar = memo(function AppSidebar() {
                     isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={handleLinkClick}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -307,7 +326,7 @@ const AppSidebar = memo(function AppSidebar() {
                     isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={handleLinkClick}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -332,7 +351,7 @@ const AppSidebar = memo(function AppSidebar() {
                     isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={handleLinkClick}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
@@ -357,7 +376,7 @@ const AppSidebar = memo(function AppSidebar() {
                     isActive={pathname === item.url}
                     className="text-sm font-medium hover:bg-accent/50 transition-colors"
                   >
-                    <Link href={item.url}>
+                    <Link href={item.url} onClick={handleLinkClick}>
                       <item.icon className="h-4 w-4 text-muted-foreground" />
                       <span className="text-foreground/90">{item.title}</span>
                     </Link>
