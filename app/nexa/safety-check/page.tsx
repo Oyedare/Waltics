@@ -169,7 +169,9 @@ function SafetyCheckContent() {
               <CardHeader className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-3">
                   {data.coinMetadata?.iconUrl ? (
-                    <img
+                    <Image
+                      width={24}
+                      height={24}
                       src={data.coinMetadata.iconUrl}
                       alt={data.coinMetadata?.symbol || ""}
                       className="h-8 w-8 rounded"

@@ -16,6 +16,15 @@ import {
   Newspaper,
   ChartBar,
   Rocket,
+  DollarSign,
+  TrendingUp,
+  Coins,
+  Percent,
+  Sparkles,
+  ShieldCheck,
+  Award,
+  Activity,
+  ArrowUpCircle,
 } from "lucide-react";
 
 import {
@@ -117,7 +126,7 @@ const nexaItems = [
   {
     title: "Latest Created Coins",
     url: "/nexa/latest-created-coins",
-    icon: Rocket,
+    icon: Sparkles,
   },
   {
     title: "Latest Meme Launcher",
@@ -127,27 +136,27 @@ const nexaItems = [
   {
     title: "Trending Coins",
     url: "/nexa/trending-coins",
-    icon: Rocket,
+    icon: TrendingUp,
   },
   {
     title: "Safety Check",
     url: "/nexa/safety-check",
-    icon: Rocket,
+    icon: ShieldCheck,
   },
   {
     title: "Top Gainers",
     url: "/nexa/top-gainers",
-    icon: Rocket,
+    icon: ArrowUpCircle,
   },
   {
     title: "Top Holder Quality",
     url: "/nexa/top-holder-quality",
-    icon: Rocket,
+    icon: Award,
   },
   {
     title: "Top Trade Count",
     url: "/nexa/top-trade-count",
-    icon: Rocket,
+    icon: Activity,
   },
 ];
 
@@ -156,6 +165,44 @@ const chatbotItems = [
     title: "AI Assistant",
     url: "/chatbot",
     icon: MessageSquare,
+  },
+];
+
+const defillamaItems = [
+  {
+    title: "Overview",
+    url: "/defillama/overview",
+    icon: BarChart3,
+  },
+  {
+    title: "Fees & Revenue",
+    url: "/defillama/fees",
+    icon: DollarSign,
+  },
+  {
+    title: "DEX Volume",
+    url: "/defillama/dexes",
+    icon: TrendingUp,
+  },
+  {
+    title: "Stablecoins",
+    url: "/defillama/stablecoins",
+    icon: Coins,
+  },
+  {
+    title: "Yields",
+    url: "/defillama/yields",
+    icon: Percent,
+  },
+  {
+    title: "Protocols",
+    url: "/defillama/protocols",
+    icon: Layers,
+  },
+  {
+    title: "Coin Prices",
+    url: "/defillama/coins",
+    icon: Coins,
   },
 ];
 
@@ -254,6 +301,31 @@ const AppSidebar = memo(function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {nexaItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.url}
+                    className="text-sm font-medium hover:bg-accent/50 transition-colors"
+                  >
+                    <Link href={item.url}>
+                      <item.icon className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-foreground/90">{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {/* DefiLlama Section */}
+        <SidebarGroup>
+          <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/80 uppercase tracking-wider">
+            Defi
+          </SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {defillamaItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     asChild
