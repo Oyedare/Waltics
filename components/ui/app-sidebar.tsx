@@ -26,6 +26,7 @@ import {
   Activity,
   ArrowUpCircle,
   X,
+  GitCompare,
 } from "lucide-react";
 
 import {
@@ -55,11 +56,15 @@ const latestItems = [
     url: "/news",
     icon: Newspaper,
   },
-
   {
     title: "Invest",
     url: "/invest",
     icon: ChartBar,
+  },
+  {
+    title: "Portfolio",
+    url: "/portfolio",
+    icon: DollarSign,
   },
 ];
 
@@ -206,6 +211,11 @@ const defillamaItems = [
     title: "Coin Prices",
     url: "/defillama/coins",
     icon: Coins,
+  },
+  {
+    title: "Compare Protocols",
+    url: "/protocol-comparison",
+    icon: GitCompare,
   },
 ];
 

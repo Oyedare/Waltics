@@ -25,6 +25,8 @@ const Navbar = memo(function Navbar() {
       "market-overview": "Market Overview",
       news: "Latest News",
       invest: "Invest",
+      portfolio: "Portfolio Tracker",
+      "protocol-comparison": "Protocol Comparison",
       chatbot: "AI Assistant",
       "network-map": "Network Map",
 

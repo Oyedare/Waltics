@@ -15,3 +15,5 @@ export { default as SuiNetworkMapPage } from "./sui-network-map-page";
 export { default as MarketOverviewPage } from "./market-overview";
 export { default as NewsPage } from "./news-page";
 export { default as InvestPage } from "./invest-page";
+export { PortfolioPage } from "./portfolio-page";
+export { ProtocolComparisonPage } from "./protocol-comparison-page";
